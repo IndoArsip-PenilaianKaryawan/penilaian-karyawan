@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+// Menampilkan form untuk membuat user baru
+Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+
+// Menyimpan data user baru
+Route::post('users', [UserController::class, 'store'])->name('users.store');
+
+// Menampilkan daftar user
+Route::get('users', [UserController::class, 'index'])->name('users.index');
+
+// Menghapus data user
+Route::delete('users/{id}',[UserController::class, 'destroy'])->name('users.destroy');
+
+// Menampilkan data user yang sudah ada
+Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+
+// Mengupdat data user
+Route::patch('users/{id}', [UserController::class, 'update'])->name('update');
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('beranda');
 });
