@@ -30,7 +30,7 @@
                 <td>{{ $user->username }}</td>
                 <td>{{ $user->name }}</td>
                 <td>
-                    <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                    <form action="{{ route('users.destroy', $user->id) }}" method="DELETE">
                         @csrf
                         <button type="submit">Hapus</button>
                     </form>

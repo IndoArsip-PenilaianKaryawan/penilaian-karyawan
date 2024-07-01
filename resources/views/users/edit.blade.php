@@ -44,6 +44,8 @@
             <button type="submit">Create User</button>
         </div>
     </form>
+
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>

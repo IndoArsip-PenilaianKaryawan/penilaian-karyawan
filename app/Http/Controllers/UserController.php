@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')->get();
+        $users = DB::table('m_users')->get();
 
         return view('users.index', ['users' => $users]);
     }
@@ -40,7 +40,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:users',
+            'username' => 'required|unique:m_users',
             'password' => 'required',
             'name' => 'required',
         ]);
@@ -50,7 +50,7 @@ class UserController extends Controller
         $name = $request->input('name');
 
 
-        DB::table('users')->insert([
+        DB::table('m_users')->insert([
             'username' => $username,
             'password' => $password,
             'name' => $name,
@@ -84,7 +84,7 @@ class UserController extends Controller
     {
         //
 
-        $user = DB::table('users')->select('id','username','password','name')
+        $user = DB::table('m_users')->select('id','username','password','name')
         ->where('id', $id)->first();
 
         $view_data = [
@@ -104,7 +104,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'username' => 'required|unique:users,username,' . $id,
+            'username' => 'required|unique:m_users,username,' . $id,
             'password' => 'sometimes',
             'name' => 'required',
         ]);
@@ -122,7 +122,7 @@ class UserController extends Controller
             $updateData['password'] = Hash::make($request->input('password'));
         }
 
-        DB::table('users')->where('id', $id)->update($updateData);
+        DB::table('m_users')->where('id', $id)->update($updateData);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
@@ -134,7 +134,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('users')->where('id', $id)->delete();
+        DB::table('m_users')->where('id', $id)->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

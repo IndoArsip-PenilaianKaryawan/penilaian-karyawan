@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('m_admin', function (Blueprint $table) {
             $table->id(); // Membuat kolom id sebagai primary key dengan auto increment
             $table->string('username')->unique(); // Membuat kolom username dengan indeks unik
             $table->string('password'); // Membuat kolom password
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('m_admin');
     }
 };

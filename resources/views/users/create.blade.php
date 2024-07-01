@@ -3,6 +3,7 @@
 
 <head>
     <title>Create User</title>
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 
 <body>
