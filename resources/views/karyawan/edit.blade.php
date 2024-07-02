@@ -6,6 +6,8 @@
 </head>
 
 <body>
+    @include('component.sidebar')
+    <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
     <h1>Tambah Karyawan</h1>
     <form action="{{url("karyawan/{$karyawan->id}")}}" method="POST">
         @method('PATCH')
@@ -93,6 +95,8 @@
         }
 
     </script>
+        </div>
+
 </body>
 
 </html>
