@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\M_user;
+use App\Models\M_kompetensi;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class KompetensiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = M_user::all();
+        // Mengambil semua data dari tabel m_kompetensi
+        $kompetensi = M_kompetensi::all();
 
-        return view('users.index', ['users' => $users]);
+        return view('kompetensi.index', ['kompetensi' => $kompetensi]);
     }
 
     /**
@@ -29,7 +28,7 @@ class UserController extends Controller
     public function create()
     {
         //
-        return view('users.create');
+        return view('kompetensi.create');
     }
 
     /**
@@ -41,26 +40,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:m_users',
-            'password' => 'required',
-            'name' => 'required',
+            'nama_kompetensi' => 'required',
+
         ]);
 
-        $username = $request->input('username');
-        $password = Hash::make($request->input('password'));
-        $name = $request->input('name');
+        $nama_kompetensi = $request->input('nama_kompetensi');
+        $deskripsi = $request->input('deskripsi');
 
-
-        M_user::addUser([
-            'username' => $username,
-            'password' => $password,
-            'name' => $name,
+        M_kompetensi::addKompetensi([
+            'nama_kompetensi' => $nama_kompetensi,
+            'deskripsi' => $deskripsi,
             'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('kompetensi.index')->with('success', 'Kompetensi created successfully.');
     }
 
     /**
@@ -83,13 +76,12 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-
-        $user = M_user::editUser($id);
+        $kompetensi = M_kompetensi::editKompetensi($id);
         $view_data = [
-            'user' => $user
+            'kompetensi' => $kompetensi,
         ];
 
-        return view ('users.edit', $view_data);
+        return view('kompetensi.edit', $view_data);
     }
 
     /**
@@ -101,29 +93,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
+
         $request->validate([
-            'username' => 'required|unique:m_users,username,' . $id,
-            'password' => 'sometimes',
-            'name' => 'required',
+            'nama_kompetensi' => 'required',
         ]);
 
-        $username = $request->input('username');
-        $name = $request->input('name');
+        $nama_kompetensi = $request->input('nama_kompetensi');
+        $deskripsi = $request->input('deskripsi');
 
         $updateData = [
-            'username' => $username,
-            'name' => $name,
+            'nama_kompetensi' => $nama_kompetensi,
+            'deskripsi' => $deskripsi,
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        if ($request->filled('password')) {
-            $updateData['password'] = Hash::make($request->input('password'));
-        }
-
-        M_user::updateUser($updateData, $id);
-
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+       M_kompetensi::updateKompetensi($updateData, $id);
+       return redirect()->route('kompetensi.index')->with('success', 'Kompetensi updated successfully.');
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -132,8 +120,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        M_user::deleteUser($id);
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
+        M_kompetensi::deleteKompetensi($id);
+        return redirect()->route('kompetensi.index')->with('success', 'Kompetensi deleted successfully.');
     }
-
 }

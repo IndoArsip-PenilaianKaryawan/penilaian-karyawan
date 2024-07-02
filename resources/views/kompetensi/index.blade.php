@@ -2,12 +2,12 @@
 <html>
 
 <head>
-    <title>Daftar Pengguna</title>
+    <title>Daftar Kompetensi</title>
 </head>
 
 <body>
-    <h1>Daftar Pengguna</h1>
-    <a href="{{ route('users.create') }}">Tambah Pengguna</a>
+    <h1>Daftar Kompetensi</h1>
+    <a href="{{ route('kompetensi.create') }}">Tambah Kompetensi</a>
 
     @if (session('success'))
     <div>
@@ -19,24 +19,24 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Username</th>
-                <th>Nama</th>
+                <th>Nama Kompetensi</th>
+                <th>Deskripsi</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
+            @foreach ($kompetensi as $item)
             <tr>
-                <td>{{ $user->id }}</td>
-                <td>{{ $user->username }}</td>
-                <td>{{ $user->name }}</td>
+                <td>{{ $item->id }}</td>
+                <td>{{ $item->nama_kompetensi }}</td>
+                <td>{{ $item->deskripsi }}</td>
                 <td>
-                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                    <form action="{{ route('kompetensi.destroy', $item->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit">Hapus</button>
                     </form>
-                    <a href="{{ route('users.edit', $user->id) }}">Edit</a>
+                    <a href="{{ route('kompetensi.edit', $item->id) }}">Edit</a>
                 </td>
             </tr>
             @endforeach

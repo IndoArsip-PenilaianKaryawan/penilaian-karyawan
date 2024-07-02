@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="" href="/users/create">
+                        <a class="" href="/users">
                             <button class="middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize" type="button">
                                 <span class="text-xs">ini icon</span>
                                 <p class="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">User</p>
@@ -36,10 +36,10 @@
                         </a>
                     </li>
                     <li>
-                        <a class="" href="#">
+                        <a class="" href="/kompetensi">
                             <button class="middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize" type="button">
                                 <span class="text-xs">ini icon</span>
-                                <p class="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">tables</p>
+                                <p class="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize">Kompetensi</p>
                             </button>
                         </a>
                     </li>
@@ -164,12 +164,12 @@
                             </p>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <script src="{{ mix('js/app.js') }}"></script>
+        <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>
