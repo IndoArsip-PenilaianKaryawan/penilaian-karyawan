@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 
 
 // Menampilkan form untuk membuat user baru
@@ -33,6 +33,25 @@ Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit
 
 // Mengupdat data user
 Route::patch('users/{id}', [UserController::class, 'update'])->name('update');
+
+
+// Menampilkan daftar karyawan
+Route::get('karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
+
+// Menampilkan form untuk membuat karyawan baru
+Route::get('karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
+
+// Menyimpan data karyawan baru
+Route::post('karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
+
+// Menampilkan data karyawan yang sudah ada
+Route::get('karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
+
+//menupdate data karyawan
+Route::patch('karyawan/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
+
+// Menghapus data karyawan
+Route::delete('karyawan/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');   
 
 Route::get('/', function () {
     return view('beranda');
