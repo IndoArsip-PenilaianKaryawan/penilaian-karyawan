@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Karyawan extends Model
+class M_karyawan extends Model
 {
     use HasFactory;
 
@@ -23,26 +23,26 @@ class Karyawan extends Model
 
     public function bidang()
     {
-        return $this->belongsTo(Bidang::class, 'id_bidang');
+        return $this->belongsTo(M_bidang::class, 'id_bidang');
     }
 
     public function atasan()
     {
-        return $this->belongsTo(Users::class, 'id_atasan');
+        return $this->belongsTo(M_user::class, 'id_atasan');
     }
 
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'id_jabatan');
+        return $this->belongsTo(M_jabatan::class, 'id_jabatan');
     }
 
     public function approval1()
     {
-        return $this->belongsTo(Users::class, 'id_approval_1');
+        return $this->belongsTo(M_user::class, 'id_approval_1');
     }
 
     public function approval2()
     {
-        return $this->belongsTo(Users::class, 'id_approval_2');
+        return $this->belongsTo(M_user::class, 'id_approval_2');
     }
 }

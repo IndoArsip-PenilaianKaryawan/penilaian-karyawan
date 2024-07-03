@@ -14,19 +14,19 @@
                 @method('PATCH')
                 @csrf
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Nama:</div>
+                    <div class="font-semibold">Nama</div>
                     <input type="text" id="nama" name="nama" required
                         value="{{ $karyawan->nama }}"placeholder="Masukan Nama"
                         class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                 </div>
                 <div class="gap-2 grid">
-                    <div class="font-semibold">No Pegawai:</div>
+                    <div class="font-semibold">No Pegawai</div>
                     <input type="text" id="no_pegawai" name="no_pegawai" required value="{{ $karyawan->no_pegawai }}"
                         placeholder="Masukan No Pegawai"
                         class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                 </div>
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Departemen:</div>
+                    <div class="font-semibold">Departemen</div>
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_departement" name="id_departement" required onchange=getBidangs()
                             placeholder="Masukan Departement" class="bg-transparent w-full outline-0">
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Bidang:</div>
+                    <div class="font-semibold">Bidang</div>
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_bidang" name="id_bidang" required placeholder="Masukan Bidang"
                             class="bg-transparent w-full outline-0">
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Jabatan:</div>
+                    <div class="font-semibold">Jabatan</div>
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_jabatan" name="id_jabatan" required placeholder="Masukan Jabatan"
                             class="bg-transparent w-full outline-0">
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Atasan:</div>
+                    <div class="font-semibold">Atasan</div>
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_atasan" name="id_atasan" required placeholder="Masukan Atasan"
                             class="bg-transparent w-full outline-0">
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Approval 1:</div>
+                    <div class="font-semibold">Approval 1</div>
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_approval_1" name="id_approval_1" required placeholder="Masukan Approval 1"
                             class="bg-transparent w-full outline-0">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Approval 2:</div>
+                    <div class="font-semibold">Approval 2</div>
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_approval_2" name="id_approval_2" required placeholder="Masukan Approval 2"
                             class="bg-transparent w-full outline-0">

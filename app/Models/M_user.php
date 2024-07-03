@@ -29,4 +29,26 @@ class M_user extends Model
         return $query->where('id', $id)->update($data);
     }
 
+    protected $table = 'm_users';
+
+    protected $fillable = [
+        'username',
+        'password',
+        'name',
+    ];
+
+    public function atasan()
+    {
+        return $this->hasMany(M_karyawan::class, 'id_atasan');
+    }
+    
+    public function approval1()
+    {
+        return $this->hasMany(M_karyawan::class, 'id_approval_1');
+    }
+
+    public function approval2()
+    {
+        return $this->hasMany(M_karyawan::class, 'id_approval_2');
+    }
 }
