@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <style>
         .active {
@@ -25,10 +26,10 @@
             <div class="m-4">
                 <ul class="mb-4 flex flex-col gap-1">
                     <li>
-                        <a href="#">
-                            <button class="flex items-center gap-6 w-full p-4 rounded-2xl"  type="button">
+                        <a href="/">
+                            <button id="dashboard-link" class="flex items-center gap-6 w-full p-4 rounded-2xl"  type="button">
                                 <span class="text-xs">ini icon</span>
-                                <p>dashboard</p>
+                                <p>Dashboard</p>
                             </button>
                         </a>
                     </li>
@@ -52,7 +53,15 @@
                         <a href="#">
                             <button class="flex items-center gap-6 w-full p-4 rounded-2xl" type="button">
                                 <span class="text-xs">ini icon</span>
-                                <p>notifactions</p>
+                                <p>Periode</p>
+                            </button>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <button class="flex items-center gap-6 w-full p-4 rounded-2xl" type="button">
+                                <span class="text-xs">ini icon</span>
+                                <p>Kriteria</p>
                             </button>
                         </a>
                     </li>

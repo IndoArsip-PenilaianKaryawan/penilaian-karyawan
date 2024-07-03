@@ -66,7 +66,7 @@
     <div class="my-4 flex justify-start items-center w-full ">
         <div class="p-4 bg-[#E5E5E5]  rounded-l-2xl  text-sm w-1/3">
             <i class="fas fa-search text-[#34364A]  pr-2"></i>
-            <input id="searchInput" class="bg-transparent outline-0 w-11/12" type="text" placeholder="Cari Karyawan..." onkeyup="searchKaryawan()">
+            <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text" placeholder="Cari Karyawan..." onkeyup="searchKaryawan()">
         </div>
         <button class="py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl  text-sm" onclick="searchKaryawan()">
             Cari
@@ -106,11 +106,11 @@
                 <td>{{ $karyawan->approval1->name }}</td>
                 <td>{{ $karyawan->approval2->name }}</td>
                 <td>
-                    <a href="{{ route('karyawan.edit', $karyawan->id) }}">Edit</a>
+                    <a href="{{ route('karyawan.edit', $karyawan->id) }}" class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">EDIT</a>
                     <form action="{{ route('karyawan.destroy', $karyawan->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit">Hapus</button>
+                        <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">Hapus</button>
                     </form>
                 </td>
             </tr>
