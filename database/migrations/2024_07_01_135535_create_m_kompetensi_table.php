@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_kompetensi');
             $table->text('deskripsi')->nullable();
+            $table->timestamps(); // Membuat kolom created_at dan updated_at
         });
     }
 
