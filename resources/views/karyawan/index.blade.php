@@ -36,14 +36,42 @@
             color: white;
         }
     </style>
+    <script>
+        function searchKaryawan() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("karyawanTable");
+            tr = table.getElementsByTagName("tr");
+            
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1]; // Column index for Nama
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
 <body>
     @include ('component.sidebar')
     <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
     <h1 class="text-3xl font-semibold ">Halaman Karyawan</h1>
-    <div class=" my-4 flex justify-end">
-        <a class="bg-[#9F2D2D] text-white px-4 py-2 rounded-md text-sm " href="/karyawan/create"> <i class="fas fa-plus pr-2"></i> Tambah Karyawan</a>
+    <div class="my-4 flex justify-start items-center w-full ">
+        <div class="p-4 bg-[#E5E5E5]  rounded-l-2xl  text-sm w-1/3">
+            <i class="fas fa-search text-[#34364A]  pr-2"></i>
+            <input id="searchInput" class="bg-transparent outline-0 w-11/12" type="text" placeholder="Cari Karyawan..." onkeyup="searchKaryawan()">
+        </div>
+        <button class="py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl  text-sm" onclick="searchKaryawan()">
+            Cari
+        </button>
+        <a class="bg-[#9F2D2D] text-white p-4  rounded-2xl text-sm ml-4" href="/karyawan/create"> <i class="fas fa-plus pr-2"></i> Tambah Karyawan</a>
     </div>
 
     @if (session('success'))
@@ -52,7 +80,7 @@
     </div>
     @endif
 
-    <table border="1">
+    <table border="1" id="karyawanTable">
         <thead>
             <tr >
                 <th>ID</th>
