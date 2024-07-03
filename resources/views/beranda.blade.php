@@ -9,6 +9,7 @@
 
 <body>
 
+    @include('component.sidebar')
     <!-- component -->
     <div class="min-h-screen bg-gray-50/50">
         <aside class="bg-gradient-to-br from-gray-800 to-gray-900 -translate-x-80 fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0">
@@ -79,7 +80,6 @@
                 </ul>
             </div>
         </aside>
-
 
         <div class="p-4 xl:ml-80">
             <nav class="block w-full max-w-full bg-transparent text-white shadow-none rounded-xl transition-all px-0 py-1">

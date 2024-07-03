@@ -7,6 +7,9 @@
 </head>
 
 <body>
+    @include('component.sidebar')
+    <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
+
     <h1>Create User</h1>
 
     @if (session('success'))
@@ -43,6 +46,8 @@
             <button type="submit">Create User</button>
         </div>
     </form>
+</div>
+
 </body>
 
 </html>
