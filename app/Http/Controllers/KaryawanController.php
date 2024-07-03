@@ -6,6 +6,11 @@ use App\Models\Bidang;
 use App\Models\Departement;
 use App\Models\Jabatan;
 use App\Models\Karyawan;
+use App\Models\M_bidang;
+use App\Models\M_departement;
+use App\Models\M_jabatan;
+use App\Models\M_karyawan;
+use App\Models\M_users;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,17 +20,17 @@ class KaryawanController extends Controller
     // Menampilkan daftar karyawan
     public function index()
     {
-        $karyawans = Karyawan::all();
+        $karyawans = M_karyawan::all();
         return view('karyawan.index', compact('karyawans'));
     }
 
     // Menampilkan form untuk menambah karyawan baru
     public function create()
     {
-        $departements = Departement::all();
-        $bidangs = Bidang::all();
-        $users = Users::all();
-        $jabatans = Jabatan::all();
+        $departements = M_departement::all();
+        $bidangs = M_bidang::all();
+        $users = M_users::all();
+        $jabatans = M_jabatan::all();
         return view('karyawan.create', compact('bidangs', 'users', 'departements', 'jabatans'));
     }
 
@@ -57,7 +62,7 @@ class KaryawanController extends Controller
     }
 
     // Menampilkan detail karyawan
-    public function show(Karyawan $karyawan)
+    public function show(M_karyawan $karyawan)
     {
         return view('karyawan.show', compact('karyawan'));
     }
@@ -65,11 +70,11 @@ class KaryawanController extends Controller
     // Menampilkan form untuk mengedit karyawan
     public function edit($id)
     {
-        $karyawan = Karyawan::find($id);
-        $departements = Departement::all();
-        $bidangs = Bidang::all();
-        $users = Users::all();
-        $jabatans = Jabatan::all();
+        $karyawan = M_karyawan::find($id);
+        $departements =M_departement::all();
+        $bidangs = M_bidang::all();
+        $users = M_users::all();
+        $jabatans = M_jabatan::all();
         return view('karyawan.edit', compact('bidangs', 'users', 'departements', 'jabatans', 'karyawan'));
     }
 

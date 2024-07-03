@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Karyawan;
-use App\Models\Kompetensi;
-use App\Models\Users;
+
+use App\Models\M_karyawan;
+use App\Models\M_kompetensi;
+use App\Models\M_users;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $userCount = Users::count();
-        $karyawanCount = Karyawan::count();
-        $kompetensiCount = Kompetensi::count();
+        $userCount = M_users::count();
+        $karyawanCount = M_karyawan::count();
+        $kompetensiCount = M_kompetensi::count();
 
         return view('dashboard_adm.index', [
             'userCount' => $userCount,

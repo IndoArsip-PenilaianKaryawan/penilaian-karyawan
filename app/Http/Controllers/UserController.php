@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users;
+use App\Models\M_users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = Users::all();
+        $users = M_users::all();
 
         return view('users.index', ['users' => $users]);
     }
@@ -51,7 +51,7 @@ class UserController extends Controller
         $name = $request->input('name');
 
 
-        Users::addUser([
+        M_users::addUser([
             'username' => $username,
             'password' => $password,
             'name' => $name,
@@ -84,7 +84,7 @@ class UserController extends Controller
     {
         //
 
-        $user = Users::editUser($id);
+        $user = M_users::editUser($id);
         $view_data = [
             'user' => $user
         ];
@@ -120,7 +120,7 @@ class UserController extends Controller
             $updateData['password'] = Hash::make($request->input('password'));
         }
 
-        Users::updateUser($updateData, $id);
+        M_users::updateUser($updateData, $id);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
@@ -136,7 +136,7 @@ class UserController extends Controller
         DB::table('m_karyawan')->where('id_approval_1', $id)->orWhere('id_approval_2', $id)->orWhere('id_atasan', $id)->delete();
 
         // Hapus user dari tabel m_users
-        Users::deleteUser($id);
+        M_users::deleteUser($id);
 
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }

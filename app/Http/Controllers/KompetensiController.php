@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kompetensi;
+
+use App\Models\M_kompetensi;
 use Illuminate\Http\Request;
 
 class KompetensiController extends Controller
@@ -15,7 +16,7 @@ class KompetensiController extends Controller
     public function index()
     {
         // Mengambil semua data dari tabel Kompetensi
-        $kompetensi = Kompetensi::all();
+        $kompetensi = M_kompetensi::all();
 
         return view('kompetensi.index', ['kompetensi' => $kompetensi]);
     }
@@ -47,7 +48,7 @@ class KompetensiController extends Controller
         $nama_kompetensi = $request->input('nama_kompetensi');
         $deskripsi = $request->input('deskripsi');
 
-        Kompetensi::addKompetensi([
+        M_kompetensi::addKompetensi([
             'nama_kompetensi' => $nama_kompetensi,
             'deskripsi' => $deskripsi,
             'created_at' => date('Y-m-d H:i:s'),
@@ -76,7 +77,7 @@ class KompetensiController extends Controller
     public function edit($id)
     {
         //
-        $kompetensi = Kompetensi::editKompetensi($id);
+        $kompetensi = M_kompetensi::editKompetensi($id);
         $view_data = [
             'kompetensi' => $kompetensi,
         ];
@@ -108,7 +109,7 @@ class KompetensiController extends Controller
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-       Kompetensi::updateKompetensi($updateData, $id);
+       M_kompetensi::updateKompetensi($updateData, $id);
        return redirect()->route('kompetensi.index')->with('success', 'Kompetensi updated successfully.');
     }
 
@@ -120,7 +121,7 @@ class KompetensiController extends Controller
      */
     public function destroy($id)
     {
-        Kompetensi::deleteKompetensi($id);
+        M_kompetensi::deleteKompetensi($id);
         return redirect()->route('kompetensi.index')->with('success', 'Kompetensi deleted successfully.');
     }
 }
