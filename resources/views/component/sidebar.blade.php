@@ -51,8 +51,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <button class="flex items-center gap-6 w-full p-4 rounded-2xl" type="button">
+                    <a href="/periode">
+                        <button id="periode-link" class="flex items-center gap-6 w-full p-4 rounded-2xl" type="button">
                             <span class="text-xs">ini icon</span>
                             <p>Periode</p>
                         </button>
@@ -95,6 +95,7 @@
                 "/": "dashboard-link",
                 "/users": "user-link",
                 "/karyawan": "karyawan-link",
+                "/periode": "periode-link",
                 "/kompetensi": "kompetensi-link",
                 "/notifications": "notifications-link",
                 "/signin": "signin-link",
@@ -111,11 +112,11 @@
                 document.getElementById(links[currentPath])?.classList.add("active");
             } else if (currentPath.includes('karyawan')) {
                 document.getElementById('karyawan-link')?.classList.add("active");
-            }else if (currentPath.includes('kompetensi')) {
+            } else if (currentPath.includes('kompetensi')) {
                 document.getElementById('kompetensi-link')?.classList.add("active");
-            }else if (currentPath.includes('users')) {
+            } else if (currentPath.includes('users')) {
                 document.getElementById('users-link')?.classList.add("active");
-            }else if (currentPath.includes('periode')) {
+            } else if (currentPath.includes('periode')) {
                 document.getElementById('periode-link')?.classList.add("active");
             }
         });
