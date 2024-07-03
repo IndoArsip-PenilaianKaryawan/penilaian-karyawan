@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class M_kompetensi extends Model
+class Kompetensi extends Model
 {
     use HasFactory;
 
     // Menentukan nama tabel
     protected $table = 'm_kompetensi';
-    
+
     public function scopeDeleteKompetensi($query, $id)
     {
         return $query->where('id', $id)->delete();
@@ -30,5 +30,10 @@ class M_kompetensi extends Model
     public function scopeUpdateKompetensi($query, $data, $id)
     {
         return $query->where('id', $id)->update($data);
+    }
+
+    public function scopeTotal($query)
+    {
+        return $query->count();
     }
 }

@@ -45,4 +45,9 @@ class Karyawan extends Model
     {
         return $this->belongsTo(Users::class, 'id_approval_2');
     }
+
+    public function scopeTotal($query)
+    {
+        return $query->count();
+    }
 }

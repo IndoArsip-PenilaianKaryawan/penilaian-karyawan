@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KompetensiController;
+use App\Http\Controllers\PenilaiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('beranda');
-});
+
+Route::get('/', [DashboardController::class, 'index'])->name('beranda');
 
 
 // users
@@ -36,7 +37,7 @@ Route::get('karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('kar
 //menupdate data karyawan
 Route::patch('karyawan/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
 // Menghapus data karyawan
-Route::delete('karyawan/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');   
+Route::delete('karyawan/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
 
 // kompetensi
 // Menampilkan form untuk membuat komptensi baru
@@ -51,3 +52,9 @@ Route::get('kompetensi/{id}/edit', [KompetensiController::class, 'edit'])->name(
 Route::patch('kompetensi/{id}', [KompetensiController::class, 'update'])->name('kompetensi.update');
 // Menghapus data komptensi
 Route::delete('kompetensi/{id}', [KompetensiController::class, 'destroy'])->name('kompetensi.destroy');
+
+
+
+// penilai
+// Menampilkan dashboard
+Route::get('penilai', [PenilaiController::class, 'index'])->name('penilai.index');
