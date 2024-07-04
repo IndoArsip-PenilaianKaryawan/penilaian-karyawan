@@ -6,7 +6,7 @@ use App\Models\M_bidang;
 use App\Models\M_departement;
 use App\Models\M_jabatan;
 use App\Models\M_karyawan;
-use App\Models\M_user;
+use App\Models\M_users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +25,7 @@ class KaryawanController extends Controller
     {
         $departements = M_departement::all();
         $bidangs = M_bidang::all();
-        $users = M_user::all();
+        $users = M_users::all();
         $jabatans = M_jabatan::all();
         return view('karyawan.create', compact('bidangs', 'users', 'departements', 'jabatans'));
     }
@@ -69,7 +69,7 @@ class KaryawanController extends Controller
         $karyawan = M_karyawan::find($id);
         $departements = M_departement::all();
         $bidangs = M_bidang::all();
-        $users = M_user::all();
+        $users = M_users::all();
         $jabatans = M_jabatan::all();
         return view('karyawan.edit', compact('bidangs', 'users', 'departements', 'jabatans', 'karyawan'));
     }
