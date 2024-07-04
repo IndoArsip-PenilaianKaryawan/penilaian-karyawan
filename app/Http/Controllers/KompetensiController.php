@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\M_kompetensi;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class KompetensiController extends Controller
      */
     public function index()
     {
-        // Mengambil semua data dari tabel m_kompetensi
+        // Mengambil semua data dari tabel Kompetensi
         $kompetensi = M_kompetensi::all();
 
         return view('kompetensi.index', ['kompetensi' => $kompetensi]);

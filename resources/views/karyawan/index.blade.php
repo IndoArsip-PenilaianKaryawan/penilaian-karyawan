@@ -43,7 +43,7 @@
             filter = input.value.toUpperCase();
             table = document.getElementById("karyawanTable");
             tr = table.getElementsByTagName("tr");
-            
+
             for (i = 1; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[1]; // Column index for Nama
                 if (td) {
@@ -86,11 +86,11 @@
                 <th>ID</th>
                 <th>Nama</th>
                 <th>No Pegawai</th>
-                <th>Bidang</th> 
-                <th>jabatan</th> 
-                <th>atasan</th> 
-                <th>Approval 1</th> 
-                <th>Approval 2</th> 
+                <th>Bidang</th>
+                <th>jabatan</th>
+                <th>atasan</th>
+                <th>Approval 1</th>
+                <th>Approval 2</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -110,7 +110,7 @@
                     <form action="{{ route('karyawan.destroy', $karyawan->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">Hapus</button>
+                        <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">HAPUS</button>
                     </form>
                 </td>
             </tr>

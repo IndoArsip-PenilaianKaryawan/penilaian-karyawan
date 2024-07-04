@@ -15,5 +15,4 @@ class m_periode extends Model
         'nama_periode',
         'tahun',
     ];
-
 }

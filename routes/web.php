@@ -1,14 +1,15 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KompetensiController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\PenilaiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('beranda');
-});
+
+Route::get('/', [DashboardController::class, 'index'])->name('beranda');
 
 
 // users
@@ -37,7 +38,7 @@ Route::get('karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('kar
 //menupdate data karyawan
 Route::patch('karyawan/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
 // Menghapus data karyawan
-Route::delete('karyawan/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');   
+Route::delete('karyawan/{id}', [KaryawanController::class, 'destroy'])->name('karyawan.destroy');
 
 // kompetensi
 // Menampilkan form untuk membuat komptensi baru
@@ -52,6 +53,48 @@ Route::get('kompetensi/{id}/edit', [KompetensiController::class, 'edit'])->name(
 Route::patch('kompetensi/{id}', [KompetensiController::class, 'update'])->name('kompetensi.update');
 // Menghapus data komptensi
 Route::delete('kompetensi/{id}', [KompetensiController::class, 'destroy'])->name('kompetensi.destroy');
+
+// periode
+// Menampilkan form untuk membuat periode baru
+Route::get('periode/create', [PeriodeController::class, 'create'])->name('periode.create');
+// Menyimpan data periode baru
+Route::post('periode', [PeriodeController::class, 'store'])->name('periode.store');
+// Menampilkan daftar periode
+Route::get('periode', [PeriodeController::class, 'index'])->name('periode.index');
+// Menampilkan form untuk mengedit periode yang sudah ada
+Route::get('periode/{id}/edit', [PeriodeController::class, 'edit'])->name('periode.edit');
+// Mengupdate data periode
+Route::patch('periode/{id}', [PeriodeController::class, 'update'])->name('periode.update');
+// Menghapus data periode
+Route::delete('periode/{id}', [PeriodeController::class, 'destroy'])->name('periode.destroy');
+
+// penilai
+// Menampilkan dashboard
+Route::get('penilai', [PenilaiController::class, 'index'])->name('penilai.index');
+
+
+
+
+// periode
+// Menampilkan form untuk membuat periode baru
+Route::get('periode/create', [PeriodeController::class, 'create'])->name('periode.create');
+// Menyimpan data periode baru
+Route::post('periode', [PeriodeController::class, 'store'])->name('periode.store');
+// Menampilkan daftar periode
+Route::get('periode', [PeriodeController::class, 'index'])->name('periode.index');
+// Menampilkan form untuk mengedit periode yang sudah ada
+Route::get('periode/{id}/edit', [PeriodeController::class, 'edit'])->name('periode.edit');
+// Mengupdate data periode
+Route::patch('periode/{id}', [PeriodeController::class, 'update'])->name('periode.update');
+// Menghapus data periode
+Route::delete('periode/{id}', [PeriodeController::class, 'destroy'])->name('periode.destroy');
+
+// penilai
+// Menampilkan dashboard
+Route::get('penilai', [PenilaiController::class, 'index'])->name('penilai.index');
+
+
+
 
 // periode
 // Menampilkan form untuk membuat periode baru

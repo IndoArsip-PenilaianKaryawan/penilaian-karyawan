@@ -28,7 +28,11 @@ class M_karyawan extends Model
 
     public function atasan()
     {
+<<<<<<< HEAD
         return $this->belongsTo(M_user::class, 'id_atasan');
+=======
+        return $this->belongsTo(M_users::class, 'id_atasan');
+>>>>>>> origin/users
     }
 
     public function jabatan()
@@ -38,11 +42,24 @@ class M_karyawan extends Model
 
     public function approval1()
     {
+<<<<<<< HEAD
         return $this->belongsTo(M_user::class, 'id_approval_1');
+=======
+        return $this->belongsTo(M_users::class, 'id_approval_1');
+>>>>>>> origin/users
     }
 
     public function approval2()
     {
+<<<<<<< HEAD
         return $this->belongsTo(M_user::class, 'id_approval_2');
+=======
+        return $this->belongsTo(M_users::class, 'id_approval_2');
+    }
+
+    public function scopeTotal($query)
+    {
+        return $query->count();
+>>>>>>> origin/users
     }
 }

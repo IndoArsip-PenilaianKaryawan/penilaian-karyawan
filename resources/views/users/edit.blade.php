@@ -2,50 +2,38 @@
 <html>
 
 <head>
-    <title>Create User</title>
+    <title>Update User</title>
 </head>
 
+
 <body>
-    <h1>Create User</h1>
+    @include('component.sidebar')
+    <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
+        <div class="p-8 bg-white">
+            <h1 class="font-semibold text-xl text-center">Update Users</h1>
+            <form action="{{url("users/{$user->id}")}}" method="POST" class="gap-6 grid">
+                @method('PATCH')
+                @csrf
+                <div class="gap-2 grid">
+                    <div class="font-semibold">Name:</div>
+                    <input type="text" id="name" name="name" required value="{{$user->name}}" class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
+                </div>
+                <div class="gap-2 grid">
+                    <div class="font-semibold">Username:</div>
+                    <input type="text" id="username" name="username" value="{{$user->username}}" class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
+                </div>
+                <div class="gap-2 grid">
+                    <div class="font-semibold">Password:</div>
+                    <input type="password" id="password" name="password" required value="{{$user->password}}" class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
+                </div>
 
-    @if (session('success'))
-    <div>
-        {{ session('success') }}
+                <button type="submit" class="p-4 bg-[#9F2D2D]  rounded-2xl  text-sm w-full outline-0 text-white font-semibold">Update</button>
+            </form>
+        </div>
+
+        <script>
+        </script>
     </div>
-    @endif
-
-    @if ($errors->any())
-    <div>
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
-
-    <form action="{{url("users/{$user->id}")}}" method="POST">
-        @method('PATCH')
-        @csrf
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" value="{{$user->username}}" required>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" value="{{$user->password}}" required>
-        </div>
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="{{$user->name}}" required>
-        </div>
-        <div>
-            <button type="submit">Create User</button>
-        </div>
-    </form>
-
-    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>

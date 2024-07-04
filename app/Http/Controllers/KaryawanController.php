@@ -16,6 +16,7 @@ class KaryawanController extends Controller
     public function index()
     {
         $karyawans = M_karyawan::all();
+        $karyawans = M_karyawan::all();
         return view('karyawan.index', compact('karyawans'));
     }
 
