@@ -11,6 +11,11 @@ class M_nilai extends Model
 
     protected $table = 'm_nilai';
 
+    protected $casts = [
+        'indeks' => 'array', // Mengonversi kolom indeks dari JSON ke array
+    ];
+
+
     protected $fillable = [
         'indeks',
         'status_approval_1',
@@ -22,9 +27,6 @@ class M_nilai extends Model
         return $this->belongsTo(M_karyawan::class, 'id_karyawan');
     }
 
-    protected $casts = [
-        'indeks' => 'array', // Mengonversi kolom indeks dari JSON ke array
-    ];
 
 
     public function periode()

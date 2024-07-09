@@ -107,9 +107,9 @@
                     <td>{{ $karyawan->nama }}</td>
                     <td>{{ $karyawan->no_pegawai }}</td>
                     <td>{{ $karyawan->nama_bidang }}</td>
-                    <td>{{ 00 }}</td>
+                    <td>{{ number_format($karyawan->average, 2) }}</td>
                     <td>
-                        <a href="{{ route('dashboard_penilai.create', $karyawan->id) }}" class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">NILAI</a>
+                        <a href="{{ route('dashboard_penilai.create', $karyawan->id_karyawan) }}" class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">NILAI</a>
                     </td>
                 </tr>
                 @endforeach

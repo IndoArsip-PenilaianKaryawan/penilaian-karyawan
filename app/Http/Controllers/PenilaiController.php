@@ -60,11 +60,18 @@ class PenilaiController extends Controller
             // Ambil semua periodes (jika diperlukan untuk tampilan opsi selanjutnya)
             $periodes = m_periode::orderBy('created_at', 'desc')->get();
 
+            // Hitung rata-rata nilai indeks untuk setiap karyawan yang ada dalam $karyawans
+            foreach ($karyawans as $karyawan) {
+                $allIndeks = M_nilai::where('id_karyawan', $karyawan->id_karyawan)->pluck('indeks')->flatten()->all();
+                $karyawan->average = !empty($allIndeks) ? array_sum($allIndeks) / count($allIndeks) : 0;
+            }
+
             return view('dashboard_penilai.penilai', compact('karyawans', 'periodes', 'periode_terpilih'));
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
         }
     }
+
 
 
     /**
@@ -74,14 +81,16 @@ class PenilaiController extends Controller
      */
     public function create($id)
     {
-        //ambil id user
+        // Ambil data karyawan berdasarkan id_karyawan
         $karyawan = M_nilai::where('id_karyawan', $id)->first();
 
-
-        // kirim data nama kompetensi ke view
+        // Ambil semua data kompetensi
         $kompetensis = M_kompetensi::all();
+
+
         return view('dashboard_penilai.create', compact('karyawan', 'kompetensis'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -99,21 +108,25 @@ class PenilaiController extends Controller
             'id_periode' => 'required|integer|exists:m_periode,id',
         ]);
 
-        // Loop melalui indeks dan simpan atau update nilai
-        foreach ($request->indeks as $key => $indeks) {
-            M_nilai::updateOrCreate(
-                [
-                    'id_periode' => $request->id_periode,
+        // Gabungkan semua indeks ke dalam satu array dan konversikan menjadi integer
+        $indeksArray = array_map('intval', $request->indeks); // Konversi ke array integer
 
-                ],
-                [
-                    'indeks' => $indeks,
-                ]
-            );
-        }
+        // Update atau buat data baru dengan menyimpan array indeks
+        M_nilai::updateOrCreate(
+            [
+                'id_periode' => $request->id_periode,
+            ],
+            [
+                'indeks' => $indeksArray,
+            ]
+        );
+
+
 
         return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil disimpan.');
     }
+
+
 
 
 
