@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Karyawan</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -62,58 +64,52 @@
 </head>
 
 <body>
-    @include ('component.sidebar')
+    @include('component.sidebar2')
     <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
-        <h1 class="text-3xl font-semibold ">Halaman Karyawan</h1>
-        <div class="my-4 flex justify-start items-center w-full ">
-            <div class="p-4 bg-[#E5E5E5]  rounded-l-2xl  text-sm w-1/3">
-                <i class="fas fa-search text-[#34364A]  pr-2"></i>
-                <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text" placeholder="Cari Karyawan..." onkeyup="searchKaryawan()">
+        <div class="flex flex-row items-center mb-4">
+            <h1 class="text-3xl font-semibold">Halaman Penilaian</h1>
+            <div class="gap-2 grid ml-4">
+                <form action="{{ route('dashboard_penilai.filter') }}" method="POST">
+                    @csrf
+                    <div class="p-4 bg-[#E5E5E5] rounded-2xl text-sm w-full outline-0 flex items-center">
+                        <select id="id_periode" name="id_periode" required placeholder="Masukan Periode" class="bg-transparent w-full outline-none">
+                            @foreach ($periodes as $periode)
+                            <option value="{{ $periode->id }}" {{ $periode_terpilih->id == $periode->id ? 'selected' : '' }}>
+                                {{ $periode->nama_periode }}
+                            </option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="ml-2 px-4 py-2 text-black">Pilih</button>
+                    </div>
+                </form>
             </div>
-            <button class="py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl  text-sm" onclick="searchKaryawan()">
-                Cari
-            </button>
-            <a class="bg-[#9F2D2D] text-white p-4  rounded-2xl text-sm ml-4" href="/karyawan/create"> <i class="fas fa-plus pr-2"></i> Tambah Karyawan</a>
         </div>
 
         @if (session('success'))
-        <div>
+        <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
             {{ session('success') }}
         </div>
         @endif
 
-        <table border="1" id="karyawanTable">
+        <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nama</th>
-                    <th>No Pegawai</th>
+                    <th>No. Pegawai</th>
                     <th>Bidang</th>
-                    <th>jabatan</th>
-                    <th>atasan</th>
-                    <th>Approval 1</th>
-                    <th>Approval 2</th>
+                    <th>Nilai</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($karyawans as $karyawan)
                 <tr>
-                    <td>{{ $karyawan->id }}</td>
                     <td>{{ $karyawan->nama }}</td>
                     <td>{{ $karyawan->no_pegawai }}</td>
-                    <td>{{ $karyawan->bidang->nama_bidang }}</td>
-                    <td>{{ $karyawan->jabatan->nama_jabatan }}</td>
-                    <td>{{ $karyawan->atasan->name }}</td>
-                    <td>{{ $karyawan->approval1->name }}</td>
-                    <td>{{ $karyawan->approval2->name }}</td>
+                    <td>{{ $karyawan->nama_bidang }}</td>
+                    <td>{{ 00 }}</td>
                     <td>
-                        <a href="{{ route('karyawan.edit', $karyawan->id) }}" class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">EDIT</a>
-                        <form action="{{ route('karyawan.destroy', $karyawan->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">Hapus</button>
-                        </form>
+                        <a href="{{ route('dashboard_penilai.create', $karyawan->id) }}" class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">NILAI</a>
                     </td>
                 </tr>
                 @endforeach

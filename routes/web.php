@@ -77,5 +77,9 @@ Route::middleware(['auth:admin'])->group(function () {
 // penilai
 Route::middleware(['auth:user'])->group(function () {
     // Menampilkan dashboard
-    Route::get('penilai', [PenilaiController::class, 'index'])->name('penilai.index');
+    Route::get('penilai', [PenilaiController::class, 'index'])->name('dashboard_penilai.index');
+    Route::get('penilai/nilai', [PenilaiController::class, 'indexNilai'])->name('dashboard_penilai.penilai');
+    Route::post('/penilai/nilai/filter', [PenilaiController::class, 'indexNilai'])->name('dashboard_penilai.filter');
+    Route::get('/penilai/create/{id}', [PenilaiController::class, 'create'])->name('dashboard_penilai.create');
+    Route::patch('/penilai/create/{id}', [PenilaiController::class, 'store'])->name('dashboard_penilai.store');
 });

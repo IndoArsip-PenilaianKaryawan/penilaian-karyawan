@@ -12,6 +12,12 @@ class M_kompetensi extends Model
     // Menentukan nama tabel
     protected $table = 'm_kompetensi';
 
+    protected $fillable = [
+        'nama_kompetensi',
+        'deskripsi',
+    ];
+
+
     public function scopeDeleteKompetensi($query, $id)
     {
         return $query->where('id', $id)->delete();
@@ -36,4 +42,6 @@ class M_kompetensi extends Model
     {
         return $query->count();
     }
+
+
 }

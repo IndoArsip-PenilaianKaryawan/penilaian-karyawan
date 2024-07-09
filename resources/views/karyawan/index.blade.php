@@ -110,7 +110,7 @@
                         <td>{{ $karyawan->approval1->name }}</td>
                         <td>{{ $karyawan->approval2->name }}</td>
                         <td>
-                            <a href="{{ route('karyawan.edit', $karyawan->id) }}"
+                            <a href=" {{ route('karyawan.edit', $karyawan->id) }}"
                                 class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">EDIT</a>
                             <form action="{{ route('karyawan.destroy', $karyawan->id) }}" method="POST"
                                 style="display:inline;">

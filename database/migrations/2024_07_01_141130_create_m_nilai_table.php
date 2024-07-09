@@ -16,16 +16,15 @@ return new class extends Migration
         Schema::create('m_nilai', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_karyawan');
-            $table->integer('indeks');
+            $table->json('indeks');
             $table->enum('status_approval_1', ['Pending', 'Approved', 'Reject', ''])->default('Pending');
             $table->enum('status_approval_2', ['Pending', 'Approved', 'Reject', ''])->default('Pending');
             $table->unsignedBigInteger('id_periode');
-            $table->unsignedBigInteger('id_kompetensi');
+            $table->timestamps(); // Membuat kolom created_at dan updated_at
 
             // foreign key
             $table->foreign('id_karyawan')->references('id')->on('m_karyawan');
             $table->foreign('id_periode')->references('id')->on('m_periode');
-            $table->foreign('id_kompetensi')->references('id')->on('m_kompetensi');
         });
     }
 
