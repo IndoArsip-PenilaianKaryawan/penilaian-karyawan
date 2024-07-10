@@ -118,11 +118,18 @@
                     </td>
                     <td>
                         @if(isset($nilai_karyawan[$karyawan->id]['average']) && $nilai_karyawan[$karyawan->id]['average'] > 0)
-                        <a class="disabled bg-gray-400 text-gray-800 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.penilai', $karyawan->id) }}">NILAI</a>
+                        <a class="disabled bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.edit', $karyawan->id) }}">UPDATE NILAI</a>
                         @else
+
                         <a class="disabled bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.create', $karyawan->id) }}">NILAI</a>
                         @endif
-                        <a class="disabled bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.create', $karyawan->id) }}">UPDATE</a>
+
+                        <form action="{{ route('dashboard_penilai.destroy', $karyawan->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">HAPUS</button>
+                        </form>
+
                     </td>
 
                 </tr>
