@@ -20,7 +20,7 @@
                         <h5 class="mb-2 text-2xl font-normal tracking-tight text-white opacity-60">Karyawan</h5>
                     </a>
                     <div class="flex justify-between items-start">
-                        <p class="text-6xl mb-3 font-semibold text-white">1</p>
+                        <p class="text-6xl mb-3 font-semibold text-white">{{$total}}</p>
                         <svg width="57" height="56" viewBox="0 0 57 56" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="0.5" width="56" height="56" rx="28" fill="#202020" />
                             <path d="M28.5 18C25.8766 18 23.75 20.1266 23.75 22.75C23.75 25.3734 25.8766 27.5 28.5 27.5C31.1234 27.5 33.25 25.3734 33.25 22.75C33.25 20.1266 31.1234 18 28.5 18Z" fill="#FB5151" />

@@ -91,28 +91,43 @@
         </div>
         @endif
 
-        <table>
+        <h1 class="text-2xl font-semibold">Nilai {{$periode_terpilih->nama_periode}} </h1>
+
+        <table class="table table-bordered mt-4">
             <thead>
                 <tr>
+                    <th>No Pegawai</th>
                     <th>Nama</th>
-                    <th>No. Pegawai</th>
-                    <th>Bidang</th>
-                    <th>Nilai</th>
+                    <th>Nama Bidang</th>
+                    <th>Indeks</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($karyawans as $karyawan)
+                @foreach($karyawans as $karyawan)
                 <tr>
-                    <td>{{ $karyawan->nama }}</td>
                     <td>{{ $karyawan->no_pegawai }}</td>
+                    <td>{{ $karyawan->nama }}</td>
                     <td>{{ $karyawan->nama_bidang }}</td>
-                    <td>{{ number_format($karyawan->average, 2) }}</td>
                     <td>
-                        <a href="{{ route('dashboard_penilai.create', $karyawan->id_karyawan) }}" class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">NILAI</a>
+                        @if(isset($nilai_karyawan[$karyawan->id]['average']) && $nilai_karyawan[$karyawan->id]['average'] !== null)
+                        {{ number_format($nilai_karyawan[$karyawan->id]['average'], 2) }}
+                        @else
+                        0.00
+                        @endif
                     </td>
+                    <td>
+                        @if(isset($nilai_karyawan[$karyawan->id]['average']) && $nilai_karyawan[$karyawan->id]['average'] > 0)
+                        <a class="disabled bg-gray-400 text-gray-800 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.penilai', $karyawan->id) }}">NILAI</a>
+                        @else
+                        <a class="disabled bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.create', $karyawan->id) }}">NILAI</a>
+                        @endif
+                        <a class="disabled bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.create', $karyawan->id) }}">UPDATE</a>
+                    </td>
+
                 </tr>
                 @endforeach
+
             </tbody>
         </table>
     </div>

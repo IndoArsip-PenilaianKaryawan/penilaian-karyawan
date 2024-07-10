@@ -9,6 +9,7 @@ use App\Models\M_nilai;
 use App\Models\m_periode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PenilaiController extends Controller
 {
@@ -19,9 +20,11 @@ class PenilaiController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::guard('user')->user();
 
-        return view('dashboard_penilai.index');
+        $total = M_karyawan::where('id_atasan', $user->id)->count();
+
+        return view('dashboard_penilai.index', compact('total'));
     }
 
     public function indexNilai(Request $request)
@@ -42,11 +45,9 @@ class PenilaiController extends Controller
             }
 
             // Ambil data karyawan berdasarkan periode yang dipilih
-            $karyawans = M_nilai::join('m_karyawan', 'm_nilai.id_karyawan', '=', 'm_karyawan.id')
-            ->join('m_bidang', 'm_karyawan.id_bidang', '=', 'm_bidang.id')
+            $karyawans = M_karyawan::join('m_bidang', 'm_karyawan.id_bidang', '=', 'm_bidang.id')
             ->where('m_karyawan.id_atasan', $user->id)
-                ->where('m_nilai.id_periode', $id_periode) // Filter berdasarkan periode yang dipilih
-                ->select('m_nilai.*', 'm_karyawan.nama', 'm_karyawan.no_pegawai', 'm_bidang.nama_bidang')
+                ->select('m_karyawan.*', 'm_karyawan.no_pegawai', 'm_bidang.nama_bidang')
                 ->get();
 
             // Ambil data periode yang dipilih
@@ -60,18 +61,52 @@ class PenilaiController extends Controller
             // Ambil semua periodes (jika diperlukan untuk tampilan opsi selanjutnya)
             $periodes = m_periode::orderBy('created_at', 'desc')->get();
 
-            // Hitung rata-rata nilai indeks untuk setiap karyawan yang ada dalam $karyawans
+            // Ambil data nilai berdasarkan periode yang dipilih
+            $nilai_karyawan = [];
             foreach ($karyawans as $karyawan) {
-                $allIndeks = M_nilai::where('id_karyawan', $karyawan->id_karyawan)->pluck('indeks')->flatten()->all();
-                $karyawan->average = !empty($allIndeks) ? array_sum($allIndeks) / count($allIndeks) : 0;
+                // Menggunakan raw query untuk menghitung rata-rata dari array JSON
+                $average = DB::table('m_nilai')
+                ->select(DB::raw("
+                    AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_indeks
+                "))
+                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
+                ->where('id_karyawan', $karyawan->id)
+                    ->where('id_periode', $id_periode)
+                    ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
+                    ->groupBy('id_karyawan', 'id_periode')
+                    ->value('rata_rata_indeks');
+
+                $nilai = M_nilai::where('id_karyawan', $karyawan->id)
+                    ->where('id_periode', $id_periode)
+                    ->select('indeks')
+                    ->first();
+
+                if ($nilai) {
+                    if (is_string($nilai->indeks)) {
+                        $indeks_array = json_decode($nilai->indeks, true);
+                        $nilai_karyawan[$karyawan->id] = [
+                            'indeks' => $indeks_array,
+                            'average' => $average
+                        ];
+                    } else {
+                        $nilai_karyawan[$karyawan->id] = [
+                            'indeks' => $nilai->indeks,
+                            'average' => $average
+                        ];
+                    }
+                } else {
+                    $nilai_karyawan[$karyawan->id] = [
+                        'indeks' => null,
+                        'average' => $average
+                    ];
+                }
             }
 
-            return view('dashboard_penilai.penilai', compact('karyawans', 'periodes', 'periode_terpilih'));
+            return view('dashboard_penilai.penilai', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan'));
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
         }
     }
-
 
 
     /**
@@ -82,7 +117,7 @@ class PenilaiController extends Controller
     public function create($id)
     {
         // Ambil data karyawan berdasarkan id_karyawan
-        $karyawan = M_nilai::where('id_karyawan', $id)->first();
+        $karyawan = M_karyawan::where('id', $id)->first();
 
         // Ambil semua data kompetensi
         $kompetensis = M_kompetensi::all();
@@ -102,28 +137,21 @@ class PenilaiController extends Controller
 
     public function store(Request $request, $id)
     {
-        // Validasi input
-        $request->validate([
+        request()->validate([
             'indeks.*' => 'required|numeric',
             'id_periode' => 'required|integer|exists:m_periode,id',
         ]);
 
-        // Gabungkan semua indeks ke dalam satu array dan konversikan menjadi integer
-        $indeksArray = array_map('intval', $request->indeks); // Konversi ke array integer
 
-        // Update atau buat data baru dengan menyimpan array indeks
-        M_nilai::updateOrCreate(
-            [
-                'id_periode' => $request->id_periode,
-            ],
-            [
-                'indeks' => $indeksArray,
-            ]
-        );
-
-
+        M_nilai::insert([
+            'id_karyawan' => $id,
+            'id_periode' => $request->id_periode,
+            'indeks' => json_encode($request->indeks),
+        ]);
 
         return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil disimpan.');
+
+
     }
 
 
@@ -150,7 +178,7 @@ class PenilaiController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -162,7 +190,26 @@ class PenilaiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Validasi input
+        $request->validate([
+            'indeks.*' => 'required|numeric',
+            'id_periode' => 'required|integer|exists:m_periode,id',
+        ]);
+
+        // Gabungkan semua indeks ke dalam satu array dan konversikan menjadi integer
+        $indeksArray = array_map('intval', $request->indeks); // Konversi ke array integer
+
+        // Update atau buat data baru dengan menyimpan array indeks
+        M_nilai::updateOrCreate(
+            [
+                'id_periode' => $request->id_periode,
+            ],
+            [
+                'indeks' => $indeksArray,
+            ]
+        );
+
+        return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil disimpan.');
     }
 
     /**

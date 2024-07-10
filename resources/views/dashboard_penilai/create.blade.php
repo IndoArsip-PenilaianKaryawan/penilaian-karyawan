@@ -13,8 +13,8 @@
             <h1 class="font-semibold text-xl text-center">Input Nilai</h1>
             <form action="{{ route('dashboard_penilai.store', $karyawan->id) }}" method="POST" class="gap-6 grid">
                 @csrf
-                @method('PATCH')
                 <input type="hidden" name="id_periode" value="1"> <!-- Sesuaikan dengan periode yang sesuai -->
+                
 
                 @foreach ($kompetensis as $kompetensi)
                 <div class="gap-2 grid">

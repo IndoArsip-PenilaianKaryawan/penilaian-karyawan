@@ -81,5 +81,5 @@ Route::middleware(['auth:user'])->group(function () {
     Route::get('penilai/nilai', [PenilaiController::class, 'indexNilai'])->name('dashboard_penilai.penilai');
     Route::post('/penilai/nilai/filter', [PenilaiController::class, 'indexNilai'])->name('dashboard_penilai.filter');
     Route::get('/penilai/create/{id}', [PenilaiController::class, 'create'])->name('dashboard_penilai.create');
-    Route::patch('/penilai/create/{id}', [PenilaiController::class, 'store'])->name('dashboard_penilai.store');
+    Route::post('/penilai/create/{id}', [PenilaiController::class, 'store'])->name('dashboard_penilai.store');
 });
