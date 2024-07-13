@@ -39,14 +39,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/users">
-                        <button id="user-link" class="flex items-center gap-6 w-full p-4 rounded-2xl" type="button">
-                            <span class="text-xs">ini icon</span>
-                            <p>User</p>
-                        </button>
-                    </a>
-                </li>
-                <li>
                     <a href="/karyawan">
                         <button id="karyawan-link" class="flex items-center gap-6 w-full p-4 rounded-2xl"
                             type="button">
@@ -105,7 +97,6 @@
             // List of all sidebar links with their IDs
             const links = {
                 "/admin": "dashboard-link",
-                "/users": "user-link",
                 "/karyawan": "karyawan-link",
                 "/periode": "periode-link",
                 "/kompetensi": "kompetensi-link",
@@ -126,8 +117,6 @@
                 document.getElementById('karyawan-link')?.classList.add("active");
             } else if (currentPath.includes('kompetensi')) {
                 document.getElementById('kompetensi-link')?.classList.add("active");
-            } else if (currentPath.includes('users')) {
-                document.getElementById('users-link')?.classList.add("active");
             } else if (currentPath.includes('periode')) {
                 document.getElementById('periode-link')?.classList.add("active");
             }

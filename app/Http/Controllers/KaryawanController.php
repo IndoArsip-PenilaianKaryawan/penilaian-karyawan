@@ -6,7 +6,6 @@ use App\Models\M_bidang;
 use App\Models\M_departement;
 use App\Models\M_jabatan;
 use App\Models\M_karyawan;
-use App\Models\M_users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,9 +23,9 @@ class KaryawanController extends Controller
     {
         $departements = M_departement::all();
         $bidangs = M_bidang::all();
-        $users = M_users::all();
+        $karyawans = M_karyawan::all();
         $jabatans = M_jabatan::all();
-        return view('karyawan.create', compact('bidangs', 'users', 'departements', 'jabatans'));
+        return view('karyawan.create', compact('bidangs', 'karyawans', 'departements', 'jabatans'));
     }
 
     // Menyimpan karyawan baru
@@ -42,6 +41,12 @@ class KaryawanController extends Controller
             'id_approval_2' => 'required|numeric',
         ]);
 
+        if ($request->is_penilai == 'on') {
+            $is_penilai = true;
+        } else {
+            $is_penilai = false;
+        }
+
         DB::table('m_karyawan')->insert([
             'nama' => $request->nama,
             'no_pegawai' => $request->no_pegawai,
@@ -50,6 +55,8 @@ class KaryawanController extends Controller
             'id_jabatan' => $request->id_jabatan,
             'id_approval_1' => $request->id_approval_1,
             'id_approval_2' => $request->id_approval_2,
+            'is_penilai' => $is_penilai,
+            'password' => $request->no_pegawai,
         ]);
 
         return redirect()->route('karyawan.index')
@@ -67,10 +74,10 @@ class KaryawanController extends Controller
     {
         $karyawan = M_karyawan::find($id);
         $departements = M_departement::all();
+        $karyawans = M_karyawan::all();
         $bidangs = M_bidang::all();
-        $users = M_users::all();
         $jabatans = M_jabatan::all();
-        return view('karyawan.edit', compact('bidangs', 'users', 'departements', 'jabatans', 'karyawan'));
+        return view('karyawan.edit', compact('bidangs', 'departements', 'karyawans', 'jabatans', 'karyawan'));
     }
 
     // Mengupdate karyawan
@@ -86,6 +93,12 @@ class KaryawanController extends Controller
             'id_approval_2' => 'required|numeric',
         ]);
 
+        if ($request->is_penilai == 'on') {
+            $is_penilai = true;
+        } else {
+            $is_penilai = false;
+        }
+
         DB::table('m_karyawan')->where('id', $id)->update([
             'nama' => $request->nama,
             'no_pegawai' => $request->no_pegawai,
@@ -94,6 +107,7 @@ class KaryawanController extends Controller
             'id_jabatan' => $request->id_jabatan,
             'id_approval_1' => $request->id_approval_1,
             'id_approval_2' => $request->id_approval_2,
+            'is_penilai' => $is_penilai,
         ]);
         return redirect()->route('karyawan.index')
             ->with('success', 'Karyawan berhasil diupdate.');
@@ -118,4 +132,3 @@ class KaryawanController extends Controller
             ->with('success', 'Karyawan berhasil dihapus.');
     }
 }
-

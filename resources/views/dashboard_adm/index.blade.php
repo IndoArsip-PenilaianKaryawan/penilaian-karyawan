@@ -17,7 +17,7 @@
                 <!-- card -->
                 <div class="w-full max-w-md p-8 bg-[#9F2D2D] border border-gray-200 rounded-2xl shadow ">
                     <a href="#">
-                        <h5 class="mb-2 text-2xl font-normal tracking-tight text-white opacity-60">User</h5>
+                        <h5 class="mb-2 text-2xl font-normal tracking-tight text-white opacity-60">Penilai</h5>
                     </a>
                     <div class="flex justify-between items-start">
                         <p class="text-6xl mb-3 font-semibold text-white">{{$userCount}}</p>

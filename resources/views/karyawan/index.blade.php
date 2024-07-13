@@ -104,11 +104,11 @@
                         <td>{{ $karyawan->id }}</td>
                         <td>{{ $karyawan->nama }}</td>
                         <td>{{ $karyawan->no_pegawai }}</td>
-                        <td>{{ $karyawan->bidang->nama_bidang }}</td>
+                        <td>{{ $karyawan->bidang ? $karyawan->bidang->nama_bidang : 'Tidak ada' }}</td>
                         <td>{{ $karyawan->jabatan->nama_jabatan }}</td>
-                        <td>{{ $karyawan->atasan->name }}</td>
-                        <td>{{ $karyawan->approval1->name }}</td>
-                        <td>{{ $karyawan->approval2->name }}</td>
+                        <td>{{ $karyawan->atasan ? $karyawan->atasan->nama : 'Tidak ada' }}</td>
+                        <td>{{ $karyawan->approval1 ? $karyawan->approval1->nama : 'Tidak ada' }}</td>
+                        <td>{{ $karyawan->approval2 ? $karyawan->approval2->nama : 'Tidak ada' }}</td>
                         <td>
                             <a href=" {{ route('karyawan.edit', $karyawan->id) }}"
                                 class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">EDIT</a>

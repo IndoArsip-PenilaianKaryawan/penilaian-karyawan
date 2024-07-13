@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\M_admin;
-use App\Models\M_users;
+use App\Models\M_karyawan;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
@@ -18,7 +18,6 @@ class AuthController extends Controller
         }
 
         if (Auth::guard('admin')->check()) {
-            // dd(Auth::guard('admin'));
             return redirect('admin');
         }
 
@@ -30,11 +29,11 @@ class AuthController extends Controller
         $credentials = $request->only('username', 'password');
 
         $admin = M_admin::where('username', $credentials['username'])->first();
-        $user = M_users::where('username', $credentials['username'])->first();
+        $user = M_karyawan::where('no_pegawai', $credentials['username'])->first();
         if ($admin && $credentials['username'] === $admin->username && $credentials['password'] == $admin->password) {
             Auth::guard('admin')->login($admin);
             return redirect()->intended('admin');
-        } else if ($user && $credentials['username'] === $user->username && $credentials['password'] == $user->password) {
+        } else if ($user && $credentials['username'] === $user->no_pegawai && $credentials['password'] == $user->password) {
             Auth::guard('user')->login($user);
             return redirect()->intended('penilai');
         } else {

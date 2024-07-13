@@ -67,9 +67,9 @@
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_atasan" name="id_atasan" required placeholder="Masukan Atasan"
                             class="bg-transparent w-full outline-0">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" @if ($user->id == $karyawan->id_atasan) selected @endif>
-                                    {{ $user->name }}</option>
+                            @foreach ($karyawans as $karyawan)
+                                <option value="{{ $karyawan->id }}" @if ($karyawan->id == $karyawan->id_atasan) selected @endif>
+                                    {{ $karyawan->nama }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -79,9 +79,9 @@
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_approval_1" name="id_approval_1" required placeholder="Masukan Approval 1"
                             class="bg-transparent w-full outline-0">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" @if ($user->id == $karyawan->id_approval_1) selected @endif>
-                                    {{ $user->name }}</option>
+                            @foreach ($karyawans as $karyawan)
+                                <option value="{{ $karyawan->id }}" @if ($karyawan->id == $karyawan->id_approval_1) selected @endif>
+                                    {{ $karyawan->nama }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -91,12 +91,18 @@
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_approval_2" name="id_approval_2" required placeholder="Masukan Approval 2"
                             class="bg-transparent w-full outline-0">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" @if ($user->id == $karyawan->id_approval_2) selected @endif>
-                                    {{ $user->name }}</option>
+                            @foreach ($karyawans as $karyawan)
+                                <option value="{{ $karyawan->id }}" @if ($karyawan->id == $karyawan->id_approval_2) selected @endif>
+                                    {{ $karyawan->nama }}</option>
                             @endforeach
                         </select>
                     </div>
+                </div>
+                <div class="gap-2 flex items-center">
+                    <div class="font-semibold">Penilai</div>
+                    <input type="checkbox" id="is_penilai" name="is_penilai"
+                        {{ $karyawan->is_penilai ? 'checked' : '' }}
+                        class="h-4 w-4 text-[#9F2D2D] border-[#9F2D2D] rounded-full focus:ring-[#9F2D2D]">
                 </div>
                 <button type="submit"
                     class="p-4 bg-[#9F2D2D]  rounded-2xl  text-sm w-full outline-0 text-white font-semibold">Simpan</button>

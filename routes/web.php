@@ -9,6 +9,10 @@ use App\Http\Controllers\PenilaiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    return redirect('login');
+});
+
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
@@ -16,20 +20,6 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth:admin'])->group(function () {
     // Menampilkan dashboard
     Route::get('admin', [DashboardController::class, 'index'])->name('beranda');
-
-    // users
-    // Menampilkan form untuk membuat komptensi baru
-    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
-    // Menyimpan data komptensi baru
-    Route::post('users', [UserController::class, 'store'])->name('users.store');
-    // Menampilkan daftar komptensi
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
-    // Menampilkan form untuk mengedit komptensi yang sudah ada
-    Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    // Mengupdate data komptensi
-    Route::patch('users/{id}', [UserController::class, 'update'])->name('users.update');
-    // Menghapus data komptensi
-    Route::delete('users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     // karyawan
     // Menampilkan form untuk membuat karyawan baru
