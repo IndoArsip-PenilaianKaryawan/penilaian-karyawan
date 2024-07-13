@@ -8,6 +8,7 @@ use App\Models\M_jabatan;
 use App\Models\M_karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class KaryawanController extends Controller
 {
@@ -47,6 +48,12 @@ class KaryawanController extends Controller
             $is_penilai = false;
         }
 
+        if (!$is_penilai){
+            $password = NULL;
+        }else{
+            $password = Hash::make($request->no_pegawai);
+        }
+
         DB::table('m_karyawan')->insert([
             'nama' => $request->nama,
             'no_pegawai' => $request->no_pegawai,
@@ -56,7 +63,7 @@ class KaryawanController extends Controller
             'id_approval_1' => $request->id_approval_1,
             'id_approval_2' => $request->id_approval_2,
             'is_penilai' => $is_penilai,
-            'password' => $request->no_pegawai,
+            'password' => $password,
         ]);
 
         return redirect()->route('karyawan.index')
@@ -99,6 +106,12 @@ class KaryawanController extends Controller
             $is_penilai = false;
         }
 
+        if (!$is_penilai){
+            $password = NULL;
+        }else{
+            $password = Hash::make($request->no_pegawai);
+        }
+
         DB::table('m_karyawan')->where('id', $id)->update([
             'nama' => $request->nama,
             'no_pegawai' => $request->no_pegawai,
@@ -108,6 +121,7 @@ class KaryawanController extends Controller
             'id_approval_1' => $request->id_approval_1,
             'id_approval_2' => $request->id_approval_2,
             'is_penilai' => $is_penilai,
+            'password' => $password,
         ]);
         return redirect()->route('karyawan.index')
             ->with('success', 'Karyawan berhasil diupdate.');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\M_admin;
 use App\Models\M_karyawan;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
@@ -30,10 +31,11 @@ class AuthController extends Controller
 
         $admin = M_admin::where('username', $credentials['username'])->first();
         $user = M_karyawan::where('no_pegawai', $credentials['username'])->first();
-        if ($admin && $credentials['username'] === $admin->username && $credentials['password'] == $admin->password) {
+
+        if ($admin && $credentials['username'] === $admin->username && Hash::check($credentials['password'], $admin->password)) {
             Auth::guard('admin')->login($admin);
             return redirect()->intended('admin');
-        } else if ($user && $credentials['username'] === $user->no_pegawai && $credentials['password'] == $user->password) {
+        } else if ($user && $credentials['username'] === $user->no_pegawai && Hash::check($credentials['password'], $user->password)) {
             Auth::guard('user')->login($user);
             return redirect()->intended('penilai');
         } else {
