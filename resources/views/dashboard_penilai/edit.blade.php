@@ -15,7 +15,7 @@
                 @csrf
                 @method('PATCH')
                 <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
-                    <select id="id_jabatan" name="id_jabatan" required placeholder="Masukan Jabatan" class="bg-transparent w-full outline-0">
+                    <select id="id_periode" name="id_periode" required placeholder="Masukan Jabatan" class="bg-transparent w-full outline-0">
                         @foreach ($periodes as $periode)
                         <option value="{{ $periode->id }}">{{ $periode->nama_periode }}</option>
                         @endforeach

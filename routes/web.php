@@ -85,12 +85,11 @@ Route::middleware(['auth:user'])->group(function () {
 
     // Menampilkan form untuk membuat nilai baru
     Route::get('/penilai/nilai/create/{id}', [PenilaiController::class, 'create'])->name('dashboard_penilai.create');
-    Route::post('/penilai/nilai/create/{id}', [PenilaiController::class, 'store'])->name('dashboard_penilai.store');
+    Route::post('/penilai/nilai/store/{id}', [PenilaiController::class, 'store'])->name('dashboard_penilai.store');
 
     // Menampilkan form untuk mengedit nilai
     Route::get('/penilai/nilai/edit/{id}', [PenilaiController::class, 'edit'])->name('dashboard_penilai.edit');
     Route::patch('/penilai/nilai/update/{id}', [PenilaiController::class, 'update'])->name('dashboard_penilai.update');
-
     Route::delete('/penilai/nilai/delete/{id}', [PenilaiController::class, 'destroy'])->name('dashboard_penilai.destroy');
 
 

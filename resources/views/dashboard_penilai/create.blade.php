@@ -14,6 +14,14 @@
             <form action="{{ route('dashboard_penilai.store', $karyawan->id) }}" method="POST" class="gap-6 grid">
                 @csrf
 
+                <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
+                    <select id="periode" name="id_periode" required placeholder="Masukan Jabatan" class="bg-transparent w-full outline-0">
+                        @foreach ($periodes as $periode)
+                        <option value="{{ $periode->id }}">{{ $periode->nama_periode }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 @foreach ($kompetensis as $kompetensi)
                 <div class="gap-2 grid">
                     <div class="font-semibold">{{ $kompetensi->nama_kompetensi }}</div>
