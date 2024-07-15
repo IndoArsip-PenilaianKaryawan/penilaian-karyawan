@@ -72,11 +72,9 @@ Route::middleware(['auth:user'])->group(function () {
     Route::get('penilai', [PenilaiController::class, 'index'])->name('dashboard_penilai.index');
     Route::get('penilai/nilai', [PenilaiController::class, 'indexNilai'])->name('dashboard_penilai.penilai');
     Route::post('/penilai/nilai/filter', [PenilaiController::class, 'indexNilai'])->name('dashboard_penilai.filter');
-
     // Menampilkan form untuk membuat nilai baru
     Route::get('/penilai/nilai/create/{id}', [PenilaiController::class, 'create'])->name('dashboard_penilai.create');
     Route::post('/penilai/nilai/store/{id}', [PenilaiController::class, 'store'])->name('dashboard_penilai.store');
-
     // Menampilkan form untuk mengedit nilai
     Route::get('/penilai/nilai/edit/{id}', [PenilaiController::class, 'edit'])->name('dashboard_penilai.edit');
     Route::patch('/penilai/nilai/update/{id}', [PenilaiController::class, 'update'])->name('dashboard_penilai.update');
@@ -85,4 +83,8 @@ Route::middleware(['auth:user'])->group(function () {
 
     // Periksa
     Route::get('penilai/periksa', [PenilaiController::class, 'indexPeriksa'])->name('dashboard_penilai.periksa');
+    Route::post('/penilai/periksa/filter', [PenilaiController::class, 'indexPeriksa'])->name('dashboard_penilai.periksa_filter');
+    // mengupdate nilai
+    Route::get('/penilai/periksa/edit/{id}', [PenilaiController::class, 'editPeriksa'])->name('dashboard_penilai.editPeriksa');
+    Route::patch('/penilai/periksa/edit/{id}', [PenilaiController::class, 'updatePeriksa'])->name('dashboard_penilai.updatePeriksa');
 });

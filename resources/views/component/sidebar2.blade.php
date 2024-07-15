@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401,500,501,700,701&display=swap" rel="stylesheet">
     <style>
         .active {
             background-color: #9F2D2D;
@@ -92,6 +93,8 @@
                 document.getElementById(links[currentPath])?.classList.add("active");
             } else if (currentPath.includes('/penilai/nilai')) {
                 document.getElementById('penilai-link')?.classList.add("active");
+            } else if (currentPath.includes('/penilai/periksa')) {
+                document.getElementById('pengecekan-link')?.classList.add("active");
             }
         });
     </script>

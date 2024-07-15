@@ -67,11 +67,11 @@
     @include('component.sidebar2')
     <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
         <div class="flex flex-row items-center mb-4">
-            <h1 class="text-3xl font-semibold">Halaman Penilaian</h1>
+            <h1 class="text-3xl font-semibold">Halaman Pengecekan</h1>
             <div class="gap-2 grid ml-4">
-                <form action="{{ route('dashboard_penilai.filter') }}" method="POST">
+                <form action="{{ route('dashboard_penilai.periksa_filter') }}" method="POST">
                     @csrf
-                    <div class="p-4 bg-[#E5E5E5] rounded-2xl text-sm w-full outline-0 flex items-center">
+                    <div class="p-2 bg-[#E5E5E5] rounded-2xl text-sm w-full outline-0 flex items-center">
                         <select id="id_periode" name="id_periode" required placeholder="Masukan Periode" class="bg-transparent w-full outline-none">
                             @foreach ($periodes as $periode)
                             <option value="{{ $periode->id }}" {{ $periode_terpilih->id == $periode->id ? 'selected' : '' }}>
@@ -92,16 +92,16 @@
         @endif
 
         <h1 class="text-2xl font-semibold">Nilai {{$periode_terpilih->nama_periode}} </h1>
-
         <table class="table table-bordered mt-4">
             <thead>
                 <tr>
                     <th>No Pegawai</th>
                     <th>Nama</th>
-                    <th>Nama Bidang</th>
-                    <th>Indeks</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
+                    <th>Status Approval 1</th>
+                    <th>Status Approval 2</th>
+                    <th>Nilai 1</th>
+                    <th>Nilai 2</th>
+                    <th>Nilai 3</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,7 +109,20 @@
                 <tr>
                     <td>{{ $karyawan->no_pegawai }}</td>
                     <td>{{ $karyawan->nama }}</td>
-                    <td>{{ $karyawan->nama_bidang }}</td>
+                    <td>
+                        @if(isset($nilai_karyawan[$karyawan->id]['status_approval_1']))
+                        {{ $nilai_karyawan[$karyawan->id]['status_approval_1'] }}
+                        @else
+                        Belum dinilai
+                        @endif
+                    </td>
+                    <td>
+                        @if(isset($nilai_karyawan[$karyawan->id]['status_approval_2']))
+                        {{ $nilai_karyawan[$karyawan->id]['status_approval_2'] }}
+                        @else
+                        Belum dinilai
+                        @endif
+                    </td>
                     <td>
                         @if(isset($nilai_karyawan[$karyawan->id]['average']) && $nilai_karyawan[$karyawan->id]['average'] !== null)
                         {{ number_format($nilai_karyawan[$karyawan->id]['average'], 2) }}
@@ -117,26 +130,32 @@
                         0.00
                         @endif
                     </td>
-                    <td>Acc</td>
                     <td>
+                        @if($nilai_karyawan[$karyawan->id]['id_approval_1'] === $user->id || $nilai_karyawan[$karyawan->id]['id_approval_1'] === $user->id)
                         @if(isset($nilai_karyawan[$karyawan->id]['average']) && $nilai_karyawan[$karyawan->id]['average'] > 0)
-                        <a class="disabled bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.edit', $karyawan->id) }}">UPDATE NILAI</a>
+                        <a class="bg-yellow-200 text-yellow-700 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.editPeriksa', $karyawan->id) }}">UPDATE NILAI</a>
+                        <a class="bg-green-200 text-green-700 px-2 py-1 rounded-full">ACC</a>
                         @else
-
-                        <a class="disabled bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.create', $karyawan->id) }}">NILAI</a>
+                        <a class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full">BELUM DINILAI</a>
                         @endif
-
-                        <form action="{{ route('dashboard_penilai.destroy', $karyawan->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">HAPUS</button>
-                        </form>
-
+                        @else
+                        <a class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full">ANDA BUKAN APPROVAL 1</a>
+                        @endif
                     </td>
-
+                    <td>
+                        @if($nilai_karyawan[$karyawan->id]['id_approval_1'] === $user->id || $nilai_karyawan[$karyawan->id]['id_approval_2'] === $user->id)
+                        @if(isset($nilai_karyawan[$karyawan->id]['average']) && $nilai_karyawan[$karyawan->id]['average'] > 0)
+                        <a class="bg-yellow-200 text-yellow-700 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.editPeriksa', $karyawan->id) }}">UPDATE NILAI</a>
+                        <a class="bg-green-200 text-green-700 px-2 py-1 rounded-full">ACC</a>
+                        @else
+                        <a class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full">BELUM DINILAI</a>
+                        @endif
+                        @else
+                        <a class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full">ANDA BUKAN APPROVAL 2</a>
+                        @endif
+                    </td>
                 </tr>
                 @endforeach
-
             </tbody>
         </table>
     </div>

@@ -71,7 +71,7 @@
             <div class="gap-2 grid ml-4">
                 <form action="{{ route('dashboard_penilai.filter') }}" method="POST">
                     @csrf
-                    <div class="p-4 bg-[#E5E5E5] rounded-2xl text-sm w-full outline-0 flex items-center">
+                    <div class="p-2 bg-[#E5E5E5] rounded-2xl text-sm w-full outline-0 flex items-center">
                         <select id="id_periode" name="id_periode" required placeholder="Masukan Periode" class="bg-transparent w-full outline-none">
                             @foreach ($periodes as $periode)
                             <option value="{{ $periode->id }}" {{ $periode_terpilih->id == $periode->id ? 'selected' : '' }}>
