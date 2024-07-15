@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class M_karyawan extends Model
+class M_karyawan extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'm_karyawan';
 
@@ -18,7 +19,9 @@ class M_karyawan extends Model
         'id_atasan',
         'id_jabatan',
         'id_approval_1',
-        'id_approval_2'
+        'id_approval_2',
+        'password',
+        'is_penilai',
     ];
 
     public function bidang()
@@ -28,7 +31,7 @@ class M_karyawan extends Model
 
     public function atasan()
     {
-        return $this->belongsTo(M_users::class, 'id_atasan');
+        return $this->belongsTo(M_karyawan::class, 'id_atasan');
     }
 
     public function jabatan()
@@ -38,11 +41,11 @@ class M_karyawan extends Model
 
     public function approval1()
     {
-        return $this->belongsTo(M_users::class, 'id_approval_1');
+        return $this->belongsTo(M_karyawan::class, 'id_approval_1');
     }
 
     public function approval2()
     {
-        return $this->belongsTo(M_users::class, 'id_approval_2');
+        return $this->belongsTo(M_karyawan::class, 'id_approval_2');
     }
 }

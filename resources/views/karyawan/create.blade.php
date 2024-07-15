@@ -22,6 +22,7 @@
                     <input type="text" id="no_pegawai" name="no_pegawai" required placeholder="Masukan No Pegawai"
                         class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                 </div>
+
                 <div class="gap-2 grid">
                     <div class="font-semibold">Departemen</div>
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
@@ -60,8 +61,8 @@
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_atasan" name="id_atasan" required placeholder="Masukan Atasan"
                             class="bg-transparent w-full outline-0">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @foreach ($karyawans as $karyawan)
+                                <option value="{{ $karyawan->id }}">{{ $karyawan->nama }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -71,8 +72,8 @@
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_approval_1" name="id_approval_1" required placeholder="Masukan Approval 1"
                             class="bg-transparent w-full outline-0">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @foreach ($karyawans as $karyawan)
+                                <option value="{{ $karyawan->id }}">{{ $karyawan->nama }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -82,11 +83,17 @@
                     <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                         <select id="id_approval_2" name="id_approval_2" required placeholder="Masukan Approval 2"
                             class="bg-transparent w-full outline-0">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @foreach ($karyawans as $karyawan)
+                                <option value="{{ $karyawan->id }}">{{ $karyawan->nama }}</option>
                             @endforeach
                         </select>
                     </div>
+                </div>
+
+                <div class="gap-2 flex items-center">
+                    <div class="font-semibold">Penilai</div>
+                    <input type="checkbox" id="is_penilai" name="is_penilai"
+                        class="h-4 w-4 text-[#9F2D2D] border-[#9F2D2D] rounded-full focus:ring-[#9F2D2D]">
                 </div>
                 <button type="submit"
                     class="p-4 bg-[#9F2D2D]  rounded-2xl  text-sm w-full outline-0 text-white font-semibold">Tambah</button>

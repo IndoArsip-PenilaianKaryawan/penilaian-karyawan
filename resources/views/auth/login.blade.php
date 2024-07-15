@@ -19,12 +19,12 @@
                     </span>
                 @enderror
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Username:</div>
-                    <input type="text" id="username" name="username" required placeholder="Masukan Username"
+                    <div class="font-semibold">No Pegawai:</div>
+                    <input type="text" id="username" name="username" required placeholder="Masukan No Pegawai"
                         class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                 </div>
                 <div class="gap-2 grid">
-                    <div class="font-semibold">Username:</div>
+                    <div class="font-semibold">Password:</div>
                     <input type="password" id="password" name="password" required placeholder="Masukan password"
                         class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                 </div>
