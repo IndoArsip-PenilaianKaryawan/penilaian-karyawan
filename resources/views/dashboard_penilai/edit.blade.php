@@ -22,10 +22,17 @@
                     </select>
                 </div>
 
-                @foreach ($kompetensis as $kompetensi)
+                @foreach ($kompetensis as $index => $kompetensi)
                 <div class="gap-2 grid">
                     <div class="font-semibold">{{ $kompetensi->nama_kompetensi }}</div>
-                    <input type="number" name="indeks[]" required value="{{ old('indeks.' . $loop->index, $karyawan->indeks[$loop->index] ?? '') }}" placeholder="Masukkan nilai untuk {{ $kompetensi->nama_kompetensi }}" class="p-4 bg-[#E5E5E5] rounded-2xl text-sm w-full outline-0">
+                    <div class="flex flex-wrap gap-14">
+                        @for ($i = 1; $i <= 4; $i++) <label class="flex items-center gap-2">
+                            <input type="radio" name="indeks[{{ $index }}]" required value="{{ $i }}" @if (old('indeks.' . $index, $karyawan->indeks[$index] ?? '') == $i) checked @endif
+                            class="p-4 bg-[#E5E5E5] rounded-2xl text-sm outline-0">
+                            {{ $i }}
+                            </label>
+                            @endfor
+                    </div>
                 </div>
                 @endforeach
 
