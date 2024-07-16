@@ -84,7 +84,15 @@ Route::middleware(['auth:user'])->group(function () {
     // Periksa
     Route::get('penilai/periksa', [PenilaiController::class, 'indexPeriksa'])->name('dashboard_penilai.periksa');
     Route::post('/penilai/periksa/filter', [PenilaiController::class, 'indexPeriksa'])->name('dashboard_penilai.periksa_filter');
-    // mengupdate nilai
-    Route::get('/penilai/periksa/edit/{id}', [PenilaiController::class, 'editPeriksa'])->name('dashboard_penilai.editPeriksa');
-    Route::patch('/penilai/periksa/edit/{id}', [PenilaiController::class, 'updatePeriksa'])->name('dashboard_penilai.updatePeriksa');
+    // mengupdate nilai_1
+    Route::get('/penilai/periksa/edit/nilai1/{id}', [PenilaiController::class, 'editPeriksaNilai1'])->name('dashboard_penilai.editPeriksaNilai1');
+    Route::patch('/penilai/periksa/edit/nilai1/{id}', [PenilaiController::class, 'updatePeriksaNilai1'])->name('dashboard_penilai.updatePeriksaNilai1');
+
+    // mengupdate nilai_2
+    Route::get('/penilai/periksa/edit/nilai2/{id}', [PenilaiController::class, 'editPeriksaNilai2'])->name('dashboard_penilai.editPeriksaNilai2');
+    Route::patch('/penilai/periksa/edit/nilai2/{id}', [PenilaiController::class, 'updatePeriksaNilai2'])->name('dashboard_penilai.updatePeriksaNilai2');
+
+    // acc nilai
+    Route::get('/penilai/periksa/nilai1/acc/{id}', [PenilaiController::class, 'accnilai1'])->name('dashboard_penilai.accnilai1');
+    Route::get('/penilai/periksa/nilai2/acc/{id}', [PenilaiController::class, 'accnilai2'])->name('dashboard_penilai.accnilai2');
 });

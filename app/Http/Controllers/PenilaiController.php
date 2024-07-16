@@ -161,6 +161,31 @@ class PenilaiController extends Controller
                     ->groupBy('id_karyawan', 'id_periode')
                     ->value('rata_rata_indeks');
 
+                // nilai approval 1
+                $nilai_approval_1 = DB::table('m_nilai')
+                ->select(DB::raw("
+                    AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(nilai_approval_1, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_nilai_approval_1
+                "))
+                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
+                ->where('id_karyawan', $karyawan->id)
+                    ->where('id_periode', $id_periode)
+                    ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
+                    ->groupBy('id_karyawan', 'id_periode')
+                    ->value('rata_rata_nilai_approval_1');
+
+
+                // nilai approval 2
+                $nilai_approval_2 = DB::table('m_nilai')
+                ->select(DB::raw("
+                    AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(nilai_approval_2, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_nilai_approval_2
+                "))
+                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
+                ->where('id_karyawan', $karyawan->id)
+                    ->where('id_periode', $id_periode)
+                    ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
+                    ->groupBy('id_karyawan', 'id_periode')
+                    ->value('rata_rata_nilai_approval_2');
+
                 // Ambil data status approval
                 $nilai = DB::table('m_nilai')
                 ->select('indeks', 'status_approval_1', 'status_approval_2')
@@ -171,6 +196,8 @@ class PenilaiController extends Controller
                 if ($nilai) {
                     $nilai_karyawan[$karyawan->id] = [
                         'average' => $average,
+                        'nilai_approval_1' => $nilai_approval_1,
+                        'nilai_approval_2' => $nilai_approval_2,
                         'status_approval_1' => $nilai->status_approval_1,
                         'status_approval_2' => $nilai->status_approval_2,
                         'id_approval_1' => $karyawan->id_approval_1,
@@ -179,6 +206,8 @@ class PenilaiController extends Controller
                 } else {
                     $nilai_karyawan[$karyawan->id] = [
                         'average' => $average,
+                        'nilai_approval_1' => $nilai_approval_1,
+                        'nilai_approval_2' => $nilai_approval_2,
                         'status_approval_1' => null,
                         'status_approval_2' => null,
                         'id_approval_1' => $karyawan->id_approval_1,
@@ -194,96 +223,7 @@ class PenilaiController extends Controller
     }
 
 
-    public function indexPeriksaC(Request $request)
-    {
-        $user = Auth::guard('user')->user(); // Ambil user yang sudah login
-        if ($user) {
-            $id_periode = $request->input('id_periode'); // Ambil id_periode yang dipilih dari form
 
-            // Jika id_periode belum dipilih, ambil periode terbaru
-            if (!$id_periode) {
-                $periode_terbaru = m_periode::orderBy('created_at', 'desc')->first();
-
-                if (!$periode_terbaru) {
-                    return redirect()->back()->withErrors(['msg' => 'No periode available']);
-                }
-
-                $id_periode = $periode_terbaru->id;
-            }
-
-            // Ambil data karyawan berdasarkan periode yang dipilih
-            $karyawans = M_karyawan::join('m_bidang', 'm_karyawan.id_bidang', '=', 'm_bidang.id')
-            ->where(function ($query) use ($user) {
-                $query->where('m_karyawan.id_approval_1', $user->id)
-                    ->orWhere('m_karyawan.id_approval_2', $user->id);
-            })
-                ->select('m_karyawan.*', 'm_karyawan.no_pegawai', 'm_bidang.nama_bidang')
-                ->get();
-
-            // Ambil data periode yang dipilih
-            $periode_terpilih = m_periode::find($id_periode);
-
-            // Jika periode tidak ditemukan, beri respons sesuai kebutuhan
-            if (!$periode_terpilih) {
-                return redirect()->back()->withErrors(['msg' => 'Periode not found']);
-            }
-
-            // Ambil semua periodes (jika diperlukan untuk tampilan opsi selanjutnya)
-            $periodes = m_periode::orderBy('created_at', 'desc')->get();
-
-            // Ambil data nilai berdasarkan periode yang dipilih
-            $nilai_karyawan = [];
-            foreach ($karyawans as $karyawan) {
-                // Menggunakan raw query untuk menghitung rata-rata dari array JSON
-                $average = DB::table('m_nilai')
-                ->select(DB::raw("
-                    AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_indeks
-                "))
-                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
-                ->where('id_karyawan', $karyawan->id)
-                    ->where('id_periode', $id_periode)
-                    ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
-                    ->groupBy('id_karyawan', 'id_periode')
-                    ->value('rata_rata_indeks');
-
-                $nilai = DB::table('m_nilai')
-                ->select('indeks', 'status_approval_1', 'status_approval_2')
-                ->where('id_karyawan', $karyawan->id)
-                    ->where('id_periode', $id_periode)
-                    ->first();
-
-                if ($nilai) {
-                    if (is_string($nilai->indeks)) {
-                        $indeks_array = json_decode($nilai->indeks, true);
-                        $nilai_karyawan[$karyawan->id] = [
-                            'indeks' => $indeks_array,
-                            'average' => $average,
-                            'status_approval_1' => $nilai->status_approval_1, // Tambahkan status_approval_1
-                            'status_approval_2' => $nilai->status_approval_2  // Tambahkan status_approval_2
-                        ];
-                    } else {
-                        $nilai_karyawan[$karyawan->id] = [
-                            'indeks' => $nilai->indeks,
-                            'average' => $average,
-                            'status_approval_1' => $nilai->status_approval_1, // Tambahkan status_approval_1
-                            'status_approval_2' => $nilai->status_approval_2  // Tambahkan status_approval_2
-                        ];
-                    }
-                } else {
-                    $nilai_karyawan[$karyawan->id] = [
-                        'indeks' => null,
-                        'average' => $average,
-                        'status_approval_1' => null, // Set status_approval_1 menjadi null jika tidak ada nilai
-                        'status_approval_2' => null  // Set status_approval_2 menjadi null jika tidak ada nilai
-                    ];
-                }
-            }
-
-            return view('dashboard_penilai.pengecek', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan'));
-        } else {
-            return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
-        }
-    }
 
 
     /**
@@ -316,6 +256,8 @@ class PenilaiController extends Controller
     {
         request()->validate([
             'indeks.*' => 'required|numeric',
+            'nilai_approval_1.*' => 'required|numeric',
+            'nilai_approval_2.*' => 'required|numeric',
             'id_periode' => 'required|integer|exists:m_periode,id',
         ]);
 
@@ -324,6 +266,8 @@ class PenilaiController extends Controller
             'id_karyawan' => $id,
             'id_periode' => $request->id_periode,
             'indeks' => json_encode($request->indeks),
+            'nilai_approval_1' => json_encode($request->indeks),
+            'nilai_approval_2' => json_encode($request->indeks),
         ]);
 
 
@@ -366,7 +310,7 @@ class PenilaiController extends Controller
 
         return view('dashboard_penilai.edit', compact('karyawan', 'kompetensis','periodes', 'namaKaryawan'));
     }
-    public function editPeriksa($id)
+    public function editPeriksaNilai1($id)
     {
         // Ambil data karyawan berdasarkan id_karyawan
         $karyawan = M_nilai::where('id_karyawan', $id)->first();
@@ -381,6 +325,22 @@ class PenilaiController extends Controller
 
 
         return view('dashboard_penilai.editPeriksa', compact('karyawan', 'kompetensis','periodes', 'namaKaryawan'));
+    }
+    public function editPeriksaNilai2($id)
+    {
+        // Ambil data karyawan berdasarkan id_karyawan
+        $karyawan = M_nilai::where('id_karyawan', $id)->first();
+
+        $namaKaryawan = M_karyawan::where('id', $id)->first();
+
+        // Ambil semua data kompetensi
+        $kompetensis = M_kompetensi::all();
+
+        // Ambil semua data kompetensi
+        $periodes = M_periode::orderBy('created_at', 'desc')->get();
+
+
+        return view('dashboard_penilai.editPeriksa2', compact('karyawan', 'kompetensis','periodes', 'namaKaryawan'));
     }
 
 
@@ -405,15 +365,14 @@ class PenilaiController extends Controller
             'indeks' => json_encode($request->indeks),
         ]);
 
-
-
         return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil disimpan.');
     }
 
-    public function updatePeriksa(Request $request, $id)
+    public function updatePeriksaNilai1(Request $request, $id)
     {
         request()->validate([
-            'indeks.*' => 'required|numeric',
+            'nilai_approval_1.*' => 'required|numeric',
+            'nilai_approval_2.*' => 'required|numeric',
             'id_periode' => 'required|integer|exists:m_periode,id',
         ]);
 
@@ -421,7 +380,27 @@ class PenilaiController extends Controller
         M_nilai::where('id_karyawan', $id)->update([
             'id_karyawan' => $id,
             'id_periode' => $request->id_periode,
-            'indeks' => json_encode($request->indeks),
+            'nilai_approval_1' => json_encode($request->nilai_approval_1),
+            'nilai_approval_2' => json_encode($request->nilai_approval_1),
+        ]);
+
+
+
+        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil disimpansi.');
+    }
+    public function updatePeriksaNilai2(Request $request, $id)
+    {
+        request()->validate([
+
+            'nilai_approval_2.*' => 'required|numeric',
+            'id_periode' => 'required|integer|exists:m_periode,id',
+        ]);
+
+
+        M_nilai::where('id_karyawan', $id)->update([
+            'id_karyawan' => $id,
+            'id_periode' => $request->id_periode,
+            'nilai_approval_2' => json_encode($request->nilai_approval_2),
         ]);
 
 
@@ -429,8 +408,22 @@ class PenilaiController extends Controller
         return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil disimpansi.');
     }
 
+    public function accnilai1 ($id)
+    {
+        M_nilai::where('id_karyawan', $id)->update([
+            'status_approval_1' => 'Approved',
+        ]);
 
+        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diApproved.');
+    }
+    public function accnilai2 ($id)
+    {
+        M_nilai::where('id_karyawan', $id)->update([
+            'status_approval_2' => 'Approved',
+        ]);
 
+        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diApproved.');
+    }
 
     /**
      * Remove the specified resource from storage.

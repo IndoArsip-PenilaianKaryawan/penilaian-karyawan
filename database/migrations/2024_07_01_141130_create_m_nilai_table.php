@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_karyawan');
             $table->json('indeks');
+            $table->json('nilai_approval_1');
+            $table->json('nilai_approval_2');
             $table->enum('status_approval_1', ['Pending', 'Approved', 'Reject', ''])->default('Pending');
             $table->enum('status_approval_2', ['Pending', 'Approved', 'Reject', ''])->default('Pending');
             $table->unsignedBigInteger('id_periode');

@@ -43,7 +43,7 @@
             filter = input.value.toUpperCase();
             table = document.getElementById("periodeTable");
             tr = table.getElementsByTagName("tr");
-            
+
             for (i = 1; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[1]; // Column index for Nama
                 if (td) {
@@ -100,7 +100,7 @@
                     <form action="{{ route('periode.destroy', $periode->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">Hapus</button>
+                        <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">HAPUS</button>
                     </form>
                 </td>
             </tr>

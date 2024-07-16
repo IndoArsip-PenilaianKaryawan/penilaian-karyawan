@@ -11,7 +11,7 @@
     <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
         <div class="p-8 bg-white">
             <h1 class="font-semibold text-xl text-center mb-6">Update Nilai Karyawan {{ $namaKaryawan->nama }}</h1>
-            <form action="{{ route('dashboard_penilai.editPeriksaNilai1', $karyawan->id_karyawan) }}" method="POST" class="gap-6 grid">
+            <form action="{{ route('dashboard_penilai.editPeriksaNilai2', $karyawan->id_karyawan) }}" method="POST" class="gap-6 grid">
                 @csrf
                 @method('PATCH')
                 <div class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
@@ -27,7 +27,7 @@
                     <div class="font-semibold">{{ $kompetensi->nama_kompetensi }}</div>
                     <div class="flex flex-wrap gap-14">
                         @for ($i = 1; $i <= 4; $i++) <label class="flex items-center gap-2">
-                            <input type="radio" name="nilai_approval_1[{{ $index }}]" required value="{{ $i }}" @if (old('nilai_approval_1.' . $index, $karyawan->nilai_approval_1[$index] ?? '') == $i) checked @endif
+                            <input type="radio" name="nilai_approval_2[{{ $index }}]" required value="{{ $i }}" @if (old('nilai_approval_2.' . $index, $karyawan->nilai_approval_2[$index] ?? '') == $i) checked @endif
                             class="p-4 bg-[#E5E5E5] rounded-2xl text-sm outline-0">
                             {{ $i }}
                             </label>

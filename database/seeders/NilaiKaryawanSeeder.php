@@ -19,6 +19,8 @@ class NilaiKaryawanSeeder extends Seeder
         M_nilai::create([
             'id_karyawan' => 1,
             'indeks' => [3, 4, 5, 6, 7, 8, 9, 10, 11],
+            'nilai_approval_1' => [3, 4, 5, 6, 7, 8, 9, 10, 11],
+            'nilai_approval_2' => [3, 4, 5, 6, 7, 8, 9, 10, 11],
             'status_approval_1' => 'Pending',
             'status_approval_2' => 'Pending',
             'id_periode' => 1,

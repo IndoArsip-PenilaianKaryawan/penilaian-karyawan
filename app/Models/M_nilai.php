@@ -13,11 +13,15 @@ class M_nilai extends Model
 
     protected $casts = [
         'indeks' => 'array', // Mengonversi kolom indeks dari JSON ke array
+        'nilai_approval_1' => 'array', // Mengonversi kolom nilai_approval_1 dari JSON ke array
+        'nilai_approval_2' => 'array', // Mengonversi kolom nilai_approval_2 dari JSON ke array
     ];
 
 
     protected $fillable = [
         'indeks',
+        'nilai_approval_1',
+        'nilai_approval_2',
         'status_approval_1',
         'status_approval_2'
     ];

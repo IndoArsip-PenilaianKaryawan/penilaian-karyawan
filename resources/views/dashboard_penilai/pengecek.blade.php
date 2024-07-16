@@ -131,27 +131,71 @@
                         @endif
                     </td>
                     <td>
-                        @if($nilai_karyawan[$karyawan->id]['id_approval_1'] === $user->id || $nilai_karyawan[$karyawan->id]['id_approval_1'] === $user->id)
-                        @if(isset($nilai_karyawan[$karyawan->id]['average']) && $nilai_karyawan[$karyawan->id]['average'] > 0)
-                        <a class="bg-yellow-200 text-yellow-700 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.editPeriksa', $karyawan->id) }}">UPDATE NILAI</a>
-                        <a class="bg-green-200 text-green-700 px-2 py-1 rounded-full">ACC</a>
+                        <!-- jika user merupakan approval -->
+                        @if($nilai_karyawan[$karyawan->id]['id_approval_1'] === $user->id )
+
+                                <!-- jika nilai approval ada dan tidak kosong -->
+                            @if(isset($nilai_karyawan[$karyawan->id]['nilai_approval_1']) && $nilai_karyawan[$karyawan->id]['nilai_approval_1'] > 0)
+                            <div class="flex justify-center items-center gap-2">
+                                <p class="{{ $nilai_karyawan[$karyawan->id]['status_approval_1'] == 'Approved' ? 'text-green-600' : 'text-red-700' }}">
+                                    {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_1'], 2) }}
+                                </p>
+                                <!-- jika status sudah di approved -->
+                                @if ($nilai_karyawan[$karyawan->id]['status_approval_1'] != 'Approved')
+                                <div class="flex gap-1">
+                                    <a class="bg-yellow-200 text-xs text-yellow-700 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.editPeriksaNilai1', $karyawan->id) }}">UPDATE</a>
+                                    <a class="bg-green-200 text-xs text-green-600 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.accnilai1', $karyawan->id) }}">ACC</a>
+                                </div>
+                                @endif
+                            </div>
+                            @else
+                            <a class="bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded-full">BELUM DINILAI</a>
+                            @endif
                         @else
-                        <a class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full">BELUM DINILAI</a>
-                        @endif
-                        @else
-                        <a class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full">ANDA BUKAN APPROVAL 1</a>
+                        <div class="flex flex-col justify-center items-center gap-2">
+                            <p class="{{ $nilai_karyawan[$karyawan->id]['status_approval_1'] == 'Approved' ? 'text-green-600' : 'text-red-500' }}">
+                                {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_1'], 2) }}
+                            </p>
+                            <a class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">APPROVAL 1</a>
+                        </div>
+
                         @endif
                     </td>
                     <td>
-                        @if($nilai_karyawan[$karyawan->id]['id_approval_1'] === $user->id || $nilai_karyawan[$karyawan->id]['id_approval_2'] === $user->id)
-                        @if(isset($nilai_karyawan[$karyawan->id]['average']) && $nilai_karyawan[$karyawan->id]['average'] > 0)
-                        <a class="bg-yellow-200 text-yellow-700 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.editPeriksa', $karyawan->id) }}">UPDATE NILAI</a>
-                        <a class="bg-green-200 text-green-700 px-2 py-1 rounded-full">ACC</a>
+                        <!-- jika user merupakan approval -->
+                        @if($nilai_karyawan[$karyawan->id]['id_approval_2'] === $user->id)
+
+                        <!-- jika nilai approval ada dan tidak kosong -->
+                        @if(isset($nilai_karyawan[$karyawan->id]['nilai_approval_2']) && $nilai_karyawan[$karyawan->id]['nilai_approval_2'] > 0)
+                            @if ($nilai_karyawan[$karyawan->id]['status_approval_1'] == 'Approved')
+                            <div class="flex justify-center items-center gap-2">
+                                <p class="{{ $nilai_karyawan[$karyawan->id]['status_approval_2'] == 'Approved' ? 'text-green-600' : 'text-red-700' }}">
+                                    {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_2'], 2) }}
+                                </p>
+                                <!-- jika status sudah di approved -->
+                                @if ($nilai_karyawan[$karyawan->id]['status_approval_2'] != 'Approved')
+                                <div class="flex gap-1">
+                                    <a class="bg-yellow-200 text-xs text-yellow-700 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.editPeriksaNilai2', $karyawan->id) }}">UPDATE</a>
+                                    <a class="bg-green-200 text-xs text-green-700 px-2 py-1 rounded-full" href="{{ route('dashboard_penilai.accnilai2', $karyawan->id) }}">ACC</a>
+                                </div>
+                                @endif
+                            </div>
+                            @else
+                            <a class="bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded-full">MENUNGGU APPROVAL 1 ACC</a>
+                            @endif
+
                         @else
-                        <a class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full">BELUM DINILAI</a>
+                        <a class="bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded-full">BELUM DINILAI</a>
                         @endif
+
                         @else
-                        <a class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full">ANDA BUKAN APPROVAL 2</a>
+                        <div class="flex flex-col justify-center items-center gap-2">
+                            <p>
+                                {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_2'], 2) }}
+                            </p>
+                            <a class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">APPROVAL 2</a>
+                        </div>
+
                         @endif
                     </td>
                 </tr>
