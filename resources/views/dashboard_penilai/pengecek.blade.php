@@ -170,7 +170,7 @@
                             @if ($nilai_karyawan[$karyawan->id]['status_approval_1'] == 'Approved')
                             <div class="flex justify-center items-center gap-2">
                                 <p class="{{ $nilai_karyawan[$karyawan->id]['status_approval_2'] == 'Approved' ? 'text-green-600' : 'text-red-700' }}">
-                                    {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_2'], 2) }}
+                                    {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_2'], 1) }}
                                 </p>
                                 <!-- jika status sudah di approved -->
                                 @if ($nilai_karyawan[$karyawan->id]['status_approval_2'] != 'Approved')
@@ -185,13 +185,13 @@
                             @endif
 
                         @else
-                        <a class="bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded-full">BELUM DINILAI</a>
+
                         @endif
 
                         @else
                         <div class="flex flex-col justify-center items-center gap-2">
                             <p>
-                                {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_2'], 2) }}
+                                {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_2'], 1) }}
                             </p>
                             <a class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">APPROVAL 2</a>
                         </div>
