@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class PenilaiController extends Controller
 {
     /**
@@ -86,28 +87,37 @@ class PenilaiController extends Controller
             ->groupBy('mb.id', 'mb.nama_bidang')
             ->first();
 
-            $rataNilaiBidang = DB::table('m_nilai as mn')
-            ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
-            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
-            ->select('mb.id', 'mb.nama_bidang', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_bidang'))
-            ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
-            })
+
+            // Assuming $user->id_departement contains the department ID from the user's selected field
+
+            $departement_id = DB::table('m_bidang as mb')
             ->where('mb.id', $user->id_bidang)
-            ->groupBy('mb.id', 'mb.nama_bidang')
-            ->first();
+            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+            ->select('d.id')
+            ->value('id');
+
 
             $rataAllBidang = DB::table('m_nilai as mn')
             ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
             ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
             ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
             ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
+                $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
             })
             ->select('mb.id', 'mb.nama_bidang', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_bidang'))
-            ->where('d.id', $user->id_departement)
+            ->where('d.id', $departement_id)
             ->groupBy('mb.id', 'mb.nama_bidang')
             ->get();
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -116,7 +116,7 @@
             </div>
 
             @if ($totalInkompeten > 0)
-            <h1 class="text-3xl my-8 font-semibold">Underperforming Karyawan</h1>
+            <h1 class="text-3xl my-8 font-semibold">Inkompeten Karyawan</h1>
             <table>
                 <thead>
                     <tr>
@@ -137,7 +137,7 @@
             </table>
             @endif
             @if ($totalKompeten > 0)
-            <h1 class="text-2xl my-4 font-semibold">Underperforming Karyawan</h1>
+            <h1 class="text-2xl my-4 font-semibold">Kompeten Karyawan</h1>
             <table>
                 <thead>
                     <tr>
@@ -167,6 +167,8 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{dd($rataAllBidang)}}
+                    {{dd($rataNilaiBidang)}}
                     @foreach ($rataAllBidang as $bidang)
                     <tr>
                         <td>{{ $bidang->id }}</td>
