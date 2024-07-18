@@ -10,7 +10,7 @@ use App\Models\m_periode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use App\Exports\KaryawanExport;
 
 class PenilaiController extends Controller
 {
@@ -109,26 +109,45 @@ class PenilaiController extends Controller
             ->groupBy('mb.id', 'mb.nama_bidang')
             ->get();
 
+            // ! Manager
+
+            $inkompetenKaryawanManager = DB::table('m_karyawan as mk')
+            ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
+            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+                ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
+                    $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
+                })
+            ->where('d.id', $departement_id)
+              ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
+            ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
+            ->having('average', '<', 3)
+            ->get();
+
+            $kompetenKaryawanManager = DB::table('m_karyawan as mk')
+            ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
+            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+                ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
+                    $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
+                })
+            ->where('d.id', $departement_id)
+              ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
+            ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
+            ->having('average', '>', 2)
+            ->get();
 
 
 
-
-
-
-
-
-
-
-
-
+            // ! Kepala Bagian
             // Ambil karyawan di bidang user yang login dengan average kurang dari 3
             $inkompetenKaryawan = DB::table('m_karyawan as mk')
             ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
             ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->whereRaw("JSON_EXTRACT(mn.indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
+                $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
             })
             ->where('mk.id_bidang', $user->id_bidang)
-            ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.indeks, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
+            ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
             ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
             ->having('average', '<', 3)
             ->get();
@@ -136,17 +155,18 @@ class PenilaiController extends Controller
             $kompetenKaryawan = DB::table('m_karyawan as mk')
             ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
             ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->whereRaw("JSON_EXTRACT(mn.indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
+                $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
             })
             ->where('mk.id_bidang', $user->id_bidang)
-            ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.indeks, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
+            ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
             ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
             ->having('average', '>', 2)
             ->get();
 
+            $totalInkompetenManager = count($inkompetenKaryawanManager);
+            $totalKompetenManager = count($kompetenKaryawanManager);
             $totalInkompeten = count($inkompetenKaryawan);
             $totalKompeten = count($kompetenKaryawan);
-
 
 
             // Ambil data nilai berdasarkan periode yang dipilih
@@ -191,7 +211,7 @@ class PenilaiController extends Controller
             }
 
         $dataLogin = M_karyawan::where('id', $user->id)->first();
-            return view('dashboard_penilai.index', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'inkompetenKaryawan', 'kompetenKaryawan', 'rataNilaiBidang', 'total', 'totalInkompeten', 'totalKompeten','dataLogin', 'rataAllBidang'));
+            return view('dashboard_penilai.index', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'inkompetenKaryawan', 'kompetenKaryawan', 'rataNilaiBidang', 'total', 'totalInkompeten', 'totalKompeten','dataLogin', 'rataAllBidang', 'inkompetenKaryawanManager', 'kompetenKaryawanManager', 'totalInkompetenManager', 'totalKompetenManager'));
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
         }
@@ -285,7 +305,7 @@ class PenilaiController extends Controller
     {
         $user = Auth::guard('user')->user(); // Ambil user yang sudah login
         if ($user) {
-            $id_periode = $request->input('id_periode'); // Ambil id_periode yang dipilih dari form
+             $id_periode = $request->input('id_periode'); // Ambil id_periode yang dipilih dari form
 
             // Jika id_periode belum dipilih, ambil periode terbaru
             if (!$id_periode) {
@@ -392,6 +412,13 @@ class PenilaiController extends Controller
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
         }
+    }
+
+
+    public function exportKaryawan(Request $request)
+    {
+        $exporter = new KaryawanExport();
+        return $exporter->export($request);
     }
 
 

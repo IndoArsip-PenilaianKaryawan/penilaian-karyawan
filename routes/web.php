@@ -95,4 +95,6 @@ Route::middleware(['auth:user'])->group(function () {
     // acc nilai
     Route::get('/penilai/periksa/nilai1/acc/{id}', [PenilaiController::class, 'accnilai1'])->name('dashboard_penilai.accnilai1');
     Route::get('/penilai/periksa/nilai2/acc/{id}', [PenilaiController::class, 'accnilai2'])->name('dashboard_penilai.accnilai2');
+    Route::get('/export-karyawan', [PenilaiController::class, 'exportKaryawan'])->name('export.karyawan');
+
 });
