@@ -122,6 +122,7 @@ class PenilaiController extends Controller
               ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
             ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
             ->having('average', '<', 3)
+            ->orderBy('average', 'desc')
             ->get();
 
             $kompetenKaryawanManager = DB::table('m_karyawan as mk')
@@ -135,6 +136,7 @@ class PenilaiController extends Controller
               ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
             ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
             ->having('average', '>', 2)
+            ->orderBy('average', 'desc')
             ->get();
 
 
@@ -217,8 +219,6 @@ class PenilaiController extends Controller
         }
     }
 
-
-
     public function indexNilai(Request $request)
     {
         $user = Auth::guard('user')->user(); // Ambil user yang sudah login
@@ -270,7 +270,7 @@ class PenilaiController extends Controller
 
                 $nilai = M_nilai::where('id_karyawan', $karyawan->id)
                     ->where('id_periode', $id_periode)
-                    ->select('indeks')
+                    ->select('indeks', 'status_approval_1')
                     ->first();
 
                 if ($nilai) {
@@ -278,18 +278,21 @@ class PenilaiController extends Controller
                         $indeks_array = json_decode($nilai->indeks, true);
                         $nilai_karyawan[$karyawan->id] = [
                             'indeks' => $indeks_array,
-                            'average' => $average
+                            'average' => $average,
+                            'status_approval_1' => $nilai->status_approval_1
                         ];
                     } else {
                         $nilai_karyawan[$karyawan->id] = [
                             'indeks' => $nilai->indeks,
-                            'average' => $average
+                            'average' => $average,
+                            'status_approval_1' => $nilai->status_approval_1
                         ];
                     }
                 } else {
                     $nilai_karyawan[$karyawan->id] = [
                         'indeks' => null,
-                        'average' => $average
+                        'average' => $average,
+                        'status_approval_1' => null
                     ];
                 }
             }
@@ -420,10 +423,6 @@ class PenilaiController extends Controller
         $exporter = new KaryawanExport();
         return $exporter->export($request);
     }
-
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -581,6 +580,7 @@ class PenilaiController extends Controller
             'id_periode' => $request->id_periode,
             'nilai_approval_1' => json_encode($request->nilai_approval_1),
             'nilai_approval_2' => json_encode($request->nilai_approval_1),
+            'status_approval_1' => 'Approved',
         ]);
 
 
@@ -600,6 +600,7 @@ class PenilaiController extends Controller
             'id_karyawan' => $id,
             'id_periode' => $request->id_periode,
             'nilai_approval_2' => json_encode($request->nilai_approval_2),
+            'status_approval_2' => 'Approved',
         ]);
 
 

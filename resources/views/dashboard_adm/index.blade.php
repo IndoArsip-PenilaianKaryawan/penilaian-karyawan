@@ -86,7 +86,8 @@
                 </div>
             </div>
 
-            <div class="bidangRata flex gap-8 mt-8">
+            <!-- rata rata bidang dan departement -->
+            <div class="flex gap-8 mt-8">
 
                 <!-- rata-rata nilai departement  -->
                 <div class="container mx-auto">

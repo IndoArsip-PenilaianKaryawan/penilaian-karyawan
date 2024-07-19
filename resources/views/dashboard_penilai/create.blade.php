@@ -23,21 +23,25 @@
                 </div>
 
                 @foreach ($kompetensis as $index => $kompetensi)
-                <div class="gap-2 grid">
-                    <div class="font-semibold">{{ $kompetensi->nama_kompetensi }}</div>
-                    <div class="flex flex-wrap gap-14">
-                        @for ($i = 1; $i <= 4; $i++) <label class="flex items-center gap-2">
-                            <input type="radio" name="indeks[{{ $index }}]" required value="{{ $i }}" class="p-4 bg-[#E5E5E5] rounded-2xl text-sm outline-0">
-                            {{ $i }}
-                            </label>
-                            @endfor
+                <div class="gap-4 mb-6 grid">
+                    <p class="font-semibold text-xl">{{ $kompetensi->nama_kompetensi }}</p>
+                    <div class="flex flex-wrap items-center gap-8">
+                        <p class="font-semibold">Tidak baik</p>
+                        <div class="grid w-[44rem] grid-cols-4 gap-2 rounded-xl bg-gray-200 p-2">
+                            @for ($i = 1; $i <= 4; $i++) <div>
+                                <input type="radio" name="indeks[{{ $index }}]" required value="{{ $i }}" id="option-{{$index}}-{{$i}}" class="peer hidden" checked />
+                                <label for="option-{{$index}}-{{$i}}" class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-red-800 peer-checked:font-bold peer-checked:text-white text-lg"> {{ $i }}</label>
+                        </div>
+                        @endfor
                     </div>
+                    <p class="font-semibold">Sangat baik</p>
+                </div>
                 </div>
                 @endforeach
 
-                <button type="submit" class="p-4 bg-[#9F2D2D] rounded-2xl text-sm w-full outline-0 text-white font-semibold">Tambah</button>
-            </form>
-        </div>
+        <button type="submit" class="p-4 bg-[#9F2D2D] rounded-2xl text-sm w-full outline-0 text-white font-semibold">Tambah</button>
+        </form>
+    </div>
     </div>
 </body>
 
