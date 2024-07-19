@@ -1,31 +1,22 @@
 <?php
 
-namespace App\Providers;
+namespace App\Http\Middleware;
 
-
-use Illuminate\Support\ServiceProvider;
+use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
-class AppServiceProvider extends ServiceProvider
+class ShareNotifCount
 {
     /**
-     * Register any application services.
+     * Handle an incoming request.
      *
-     * @return void
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function register()
-    {
-        //
-    }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function handle(Request $request, Closure $next)
     {
         View::composer('component/sidebar2', function ($view) {
             $user = Auth::guard('user')->user(); // Ambil user yang sudah login
@@ -40,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('notifCount', $notifCount);
         });
+
+        return $next($request);
     }
 }

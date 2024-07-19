@@ -51,4 +51,17 @@ class DashboardController extends Controller
             'rataAllDepartement' => $rataAllDepartement
         ]);
     }
+
+    public function notifCount(){
+        $notifCount = DB::table('m_nilai as mn')
+        ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
+        ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+        ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+        ->where('mn.status_approval_1', null)
+        ->orWhere('m_karyawan.id_approval_2', null)
+        ->count();
+        return view('component.sidebar2', [
+            'notifCount' => $notifCount
+        ]);
+    }
 }

@@ -109,6 +109,18 @@ class PenilaiController extends Controller
             ->groupBy('mb.id', 'mb.nama_bidang')
             ->get();
 
+            $rataDapartemen = DB::table('m_nilai as mn')
+            ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
+            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+            ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
+                $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
+            })
+            ->select('d.id', 'd.nama_departement', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_departement'))
+            ->where('d.id', $departement_id)
+            ->groupBy('d.id', 'd.nama_departement')
+            ->first();
+
             // ! Manager
 
             $inkompetenKaryawanManager = DB::table('m_karyawan as mk')
@@ -213,7 +225,7 @@ class PenilaiController extends Controller
             }
 
         $dataLogin = M_karyawan::where('id', $user->id)->first();
-            return view('dashboard_penilai.index', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'inkompetenKaryawan', 'kompetenKaryawan', 'rataNilaiBidang', 'total', 'totalInkompeten', 'totalKompeten','dataLogin', 'rataAllBidang', 'inkompetenKaryawanManager', 'kompetenKaryawanManager', 'totalInkompetenManager', 'totalKompetenManager'));
+            return view('dashboard_penilai.index', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'inkompetenKaryawan', 'kompetenKaryawan', 'rataNilaiBidang', 'total', 'totalInkompeten', 'totalKompeten','dataLogin', 'rataAllBidang', 'inkompetenKaryawanManager', 'kompetenKaryawanManager', 'totalInkompetenManager', 'totalKompetenManager', 'rataDapartemen'));
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
         }

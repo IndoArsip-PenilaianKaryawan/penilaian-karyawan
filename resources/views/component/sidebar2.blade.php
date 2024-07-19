@@ -5,16 +5,84 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,401,500,501,700,701&display=swap" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+
     <style>
         .active {
             background-color: #9F2D2D;
             color: white;
         }
 
-        .active svg {
-            stroke: white;
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 2px solid white;
+            box-shadow: #E1E1E1 0px 2px 2px;
+        }
+
+        td {
+            padding: 8px;
+            text-align: center;
+            background: white;
+            font-size: 14px;
+        }
+
+        th {
+            padding: 8px;
+            text-align: center;
+            background: #9F2D2D;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        thead {
+            background-color: #9F2D2D;
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: max-content;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -44,11 +112,12 @@
                         </button>
                     </a>
                 </li>
-                <li>
+                <li class="relative">
                     <a href="/penilai/periksa">
                         <button id="pengecekan-link" class="flex items-center gap-6 w-full p-4 rounded-2xl" type="button">
                             <p>Master Approval Nilai</p>
                         </button>
+                        <div class="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-2 -end-2">{{$notifCount}}</div>
                     </a>
                 </li>
             </ul>
@@ -70,6 +139,8 @@
             </ul>
         </div>
     </aside>
+
+    @yield('content-penilai')
 
     <script src="{{ mix('js/app.js') }}"></script>
     <script>
@@ -97,6 +168,30 @@
                 document.getElementById('pengecekan-link')?.classList.add("active");
             }
         });
+
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("updateButton");
+        var span = document.getElementsByClassName("close")[0];
+        var confirmBtn = document.getElementById("confirmUpdate");
+        var cancelBtn = document.getElementById("cancelUpdate");
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        cancelBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        confirmBtn.onclick = function() {
+            document.getElementById("updateForm").submit();
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 
