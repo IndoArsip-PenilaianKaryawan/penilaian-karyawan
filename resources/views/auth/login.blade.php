@@ -9,7 +9,7 @@
 
 <body>
     <div class="bg-white min-h-screen justify-center items-center flex min-w-full">
-        <div class="py-12 px-8 rounded-2xl border border-[#A5A5A5] w-1/3">
+        <div class="py-12 px-8 rounded-2xl border border-[#A5A5A5] md:w-1/3">
             <h1 class="font-semibold text-3xl text-center pb-8">Login</h1>
             <form method="POST" action="{{ route('login') }}" class="gap-6 grid">
                 @csrf
