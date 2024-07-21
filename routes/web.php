@@ -72,6 +72,7 @@ Route::middleware(['auth:user'])->group(function () {
     Route::get('penilai', [PenilaiController::class, 'index'])->name('dashboard_penilai.index');
     Route::get('penilai/nilai', [PenilaiController::class, 'indexNilai'])->name('dashboard_penilai.penilai');
     Route::post('/penilai/nilai/filter', [PenilaiController::class, 'indexNilai'])->name('dashboard_penilai.filter');
+
     // Menampilkan form untuk membuat nilai baru
     Route::get('/penilai/nilai/create/{id}', [PenilaiController::class, 'create'])->name('dashboard_penilai.create');
     Route::post('/penilai/nilai/store/{id}', [PenilaiController::class, 'store'])->name('dashboard_penilai.store');
@@ -96,5 +97,6 @@ Route::middleware(['auth:user'])->group(function () {
     Route::get('/penilai/periksa/nilai1/acc/{id}', [PenilaiController::class, 'accnilai1'])->name('dashboard_penilai.accnilai1');
     Route::get('/penilai/periksa/nilai2/acc/{id}', [PenilaiController::class, 'accnilai2'])->name('dashboard_penilai.accnilai2');
     Route::get('/export-karyawan', [PenilaiController::class, 'exportKaryawan'])->name('export.karyawan');
+    Route::post('/export-karyawan', [PenilaiController::class, 'exportKaryawan'])->name('export.karyawan');
 
 });

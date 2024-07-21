@@ -139,9 +139,12 @@ class KaryawanExport
                 $row++;
             }
 
+
+            $periodeTerpilih = M_periode::where('id', $id_periode)->first();
+
             // Write to file
             $writer = new Xlsx($spreadsheet);
-            $fileName = 'karyawan.xlsx';
+            $fileName = "$periodeTerpilih->nama_periode, $periodeTerpilih->tahun .xlsx";
             $filePath = storage_path('app/public/' . $fileName);
             $writer->save($filePath);
 

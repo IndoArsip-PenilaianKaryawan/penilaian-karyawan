@@ -17,9 +17,9 @@
             @foreach ($kompetensis as $index => $kompetensi)
             <div class="gap-4 mb-6 grid">
                 <p class="font-semibold text-xl">{{ $kompetensi->nama_kompetensi }}</p>
-                <div class="flex flex-wrap items-center gap-8">
+                <div class="flex flex-wrap items-center lg:gap-8 gap-4">
                     <p class="font-semibold">Tidak baik</p>
-                    <div class="grid w-[44rem] grid-cols-4 gap-2 rounded-xl bg-gray-200 p-2">
+                    <div class="grid lg:w-[44rem] w-full max-w-3xl  lg:grid-cols-4 grid-cols-1 gap-2 rounded-xl bg-gray-200 p-2">
                         @for ($i = 1; $i <= 4; $i++) <div>
                             <input type="radio" name="indeks[{{ $index }}]" required value="{{ $i }}" id="option-{{$index}}-{{$i}}" class="peer hidden" checked />
                             <label for="option-{{$index}}-{{$i}}" class="block cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-red-800 peer-checked:font-bold peer-checked:text-white text-lg"> {{ $i }}</label>
@@ -36,4 +36,3 @@
 </div>
 </div>
 @endsection
-

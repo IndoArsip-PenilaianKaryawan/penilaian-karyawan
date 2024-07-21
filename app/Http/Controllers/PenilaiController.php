@@ -306,6 +306,7 @@ class PenilaiController extends Controller
     {
         $user = Auth::guard('user')->user(); // Ambil user yang sudah login
         if ($user) {
+            $action = $request->input('action');
              $id_periode = $request->input('id_periode'); // Ambil id_periode yang dipilih dari form
 
             // Jika id_periode belum dipilih, ambil periode terbaru
@@ -317,6 +318,10 @@ class PenilaiController extends Controller
                 }
 
                 $id_periode = $periode_terbaru->id;
+            }
+
+            if ($action === 'export') {
+                return $this->exportKaryawan($request);
             }
 
             // Ambil data karyawan berdasarkan periode yang dipilih
@@ -468,7 +473,7 @@ class PenilaiController extends Controller
 
 
 
-        return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil disimpan.');
+        return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil ditambahkan');
 
 
     }
@@ -561,7 +566,7 @@ class PenilaiController extends Controller
             'indeks' => json_encode($request->indeks),
         ]);
 
-        return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil disimpan.');
+        return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil diupdate');
     }
 
     public function updatePeriksaNilai1(Request $request, $id)
@@ -583,7 +588,7 @@ class PenilaiController extends Controller
 
 
 
-        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil disimpansi.');
+        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diupdate');
     }
     public function updatePeriksaNilai2(Request $request, $id)
     {
@@ -603,7 +608,7 @@ class PenilaiController extends Controller
 
 
 
-        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil disimpansi.');
+        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diupdate');
     }
 
     public function accnilai1 ($id)
@@ -612,7 +617,7 @@ class PenilaiController extends Controller
             'status_approval_1' => 'Approved',
         ]);
 
-        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diApproved.');
+        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diApproved');
     }
     public function accnilai2 ($id)
     {
@@ -620,7 +625,7 @@ class PenilaiController extends Controller
             'status_approval_2' => 'Approved',
         ]);
 
-        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diApproved.');
+        return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diApproved');
     }
 
     /**
@@ -632,6 +637,6 @@ class PenilaiController extends Controller
     public function destroy($id)
     {
         M_nilai::where('id_karyawan', $id)->delete();
-        return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil dihapus.');
+        return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil dihapus');
     }
 }

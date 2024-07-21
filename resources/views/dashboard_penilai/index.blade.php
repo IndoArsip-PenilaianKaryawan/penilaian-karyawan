@@ -4,7 +4,7 @@
     <div class="p-4 xl:ml-80">
 
         <!-- Welcome User Login -->
-        <div class="mt-8">
+        <div class="lg:mt-8 mt-2">
             <h1 class="text-3xl mb-6 font-semibold">Selamat datang kembali, {{$dataLogin->nama}}</h1>
         </div>
         <div class="flex flex-wrap gap-4">
@@ -212,7 +212,7 @@
         <!-- jika jabatan adalah manager -->
         @if ($dataLogin->id_jabatan == 3)
 
-        <div class="flex gap-8 mt-8">
+        <div class="flex lg:gap-8 gap-2 mt-8">
 
             <!-- rata-rata nilai karyawan  -->
             <div class="container mx-auto">
@@ -307,7 +307,7 @@
                                             </div>
                                         </div>
                                         <div class="w-auto p-2">
-                                            <h2 class="text-xl font-medium text-coolGray-900"> {{$rataBidang->nama_bidang}} </h2>
+                                            <h2 class="lg:text-xl text-base font-medium text-coolGray-900"> {{$rataBidang->nama_bidang}} </h2>
                                         </div>
                                     </div>
                                 </div>
