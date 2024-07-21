@@ -96,7 +96,7 @@
             @if ($dataLogin->id_jabatan == 4)
             <div class="w-full max-w-xs p-8 bg-[#9F2D2D] border  transition relative duration-300 cursor-pointer hover:translate-y-[3px] border-none outline-none hover:shadow-[0_-8px_0px_0px_rgb(0,0,50)] rounded-2xl shadow  ">
                 <a href="{{route('dashboard_penilai.periksa')}}">
-                    <h5 class="mb-2 text-xl font-normal tracking-tight text-white opacity-60">Rata-rata bidang {{$rataNilaiBidang->nama_bidang}}</h5>
+                    <h5 class="mb-2 text-xl font-normal tracking-tight text-white opacity-60">Rata-rata Bagian {{$rataNilaiBidang->nama_bidang}}</h5>
                 </a>
                 <div class="flex justify-between items-start">
                     <p class="text-6xl mb-3 font-semibold text-white">{{number_format($rataNilaiBidang->rata_nilai_bidang,2)}}</p>
@@ -145,7 +145,7 @@
             <div class="mx-auto p-6 pb-1 border bg-white rounded-md shadow-dashboard">
                 <div class="flex flex-wrap items-center justify-between mb-1 -m-2">
                     <div class="w-auto p-2">
-                        <h2 class="text-lg font-semibold text-coolGray-900">Rata-rata karyawan</h2>
+                        <h2 class="text-lg font-semibold text-coolGray-900">Rata-rata Karyawan</h2>
                     </div>
                 </div>
                 <div class="flex flex-wrap">
@@ -219,7 +219,7 @@
                 <div class="mx-auto p-6 pb-1 border bg-white rounded-md shadow-dashboard">
                     <div class="flex flex-wrap items-center justify-between mb-1 -m-2">
                         <div class="w-auto p-2">
-                            <h2 class="text-lg font-semibold text-coolGray-900">Rata-rata karyawan</h2>
+                            <h2 class="text-lg font-semibold text-coolGray-900">Rata-rata Karyawan</h2>
                         </div>
                         <div class="w-auto p-2">
                             <a href="{{route('dashboard_penilai.periksa')}}" class="text-sm text-red-700 hover:text-red-600 font-semibold">See all</a>
@@ -288,7 +288,7 @@
                 <div class="mx-auto p-6 pb-1 border bg-white rounded-md shadow-dashboard">
                     <div class="flex flex-wrap items-center justify-between mb-1 -m-2">
                         <div class="w-auto p-2">
-                            <h2 class="text-lg font-semibold text-coolGray-900">Rata-rata Bidang</h2>
+                            <h2 class="text-lg font-semibold text-coolGray-900">Rata-rata Bagian</h2>
                         </div>
                     </div>
                     <div class="flex flex-wrap">

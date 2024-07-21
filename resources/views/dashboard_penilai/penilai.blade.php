@@ -33,7 +33,7 @@
             <tr>
                 <th>No Pegawai</th>
                 <th>Nama</th>
-                <th>Nama Bidang</th>
+                <th>Nama Bagian</th>
                 <th>Indeks</th>
                 <th>Aksi</th>
             </tr>

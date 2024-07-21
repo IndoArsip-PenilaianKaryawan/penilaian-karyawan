@@ -19,20 +19,6 @@ class PenilaiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index()
-    // {
-    //     $user = Auth::guard('user')->user();
-
-    //     $total = M_karyawan::where(function ($query) use ($user) {
-    //         $query->where('id_approval_1', $user->id)
-    //             ->orWhere('id_approval_2', $user->id);
-    //     })->count();
-
-
-
-
-    //     return view('dashboard_penilai.index', compact('total'));
-    // }
 
     public function index(Request $request)
     {
