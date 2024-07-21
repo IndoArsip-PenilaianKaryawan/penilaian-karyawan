@@ -29,7 +29,7 @@
             padding: 8px;
             text-align: center;
             background: white;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         th {
@@ -37,7 +37,7 @@
             text-align: center;
             background: #9F2D2D;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
         }
 
