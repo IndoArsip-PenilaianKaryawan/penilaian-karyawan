@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <title>Assesment IndoArsip</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -327,6 +328,8 @@
                 document.getElementById('periode-link')?.classList.add("active");
             } else if (currentPath.includes('cabang')) {
                 document.getElementById('cabang-link')?.classList.add("active");
+            } else if (currentPath.includes('rekap')) {
+                document.getElementById('rekap-link')?.classList.add("active");
             }
         });
     </script>

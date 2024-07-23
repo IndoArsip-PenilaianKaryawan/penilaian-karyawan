@@ -5,47 +5,51 @@
 
         <h1 class="lg:text-3xl text-2xl font-semibold">Halaman Rekap</h1>
         <div class="flex ml-4">
+
             <form action="{{ route('rekap_nilai.filter') }}" method="POST" class="w-full">
                 @csrf
-                <div class="flex gap-2 items-center w-full">
-                    <div class="p-3 bg-[#E5E5E5] rounded-2xl text-sm flex items-center w-full">
-                        <select id="id_periode" name="id_periode" required class="bg-transparent w-full outline-none">
-                            @foreach ($periodes as $periode)
-                            <option class="w-full" value="{{ $periode->id }}" {{ $periode_terpilih->id == $periode->id ? 'selected' : '' }}>
-                                {{ $periode->nama_periode }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="p-3 bg-[#E5E5E5] rounded-2xl text-sm flex items-center w-full">
-                        <select id="id_cabang" name="id_cabang" required class="bg-transparent w-full outline-none">
-                            <option value="all">All</option>
-                            @foreach ($cabangs as $cabang)
-                            <option class="w-full" value="{{ $cabang->id }}" {{ $id_cabang == $cabang->id ? 'selected' : '' }}>
-                                {{ $cabang->nama }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="p-3 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
-                        <select id="id_departement" name="id_departement" required class="bg-transparent w-full outline-0" onchange=getBidangs()>
-                            <option value="all">All</option>
-                            @foreach ($departements as $departement)
-                            <option value="{{ $departement->id }}" {{ $id_departement == $departement->id ? 'selected' : '' }}>{{ $departement->nama_departement }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="flex flex-col  gap-4">
+                    <div class="flex lg:flex-row flex-col gap-2 lg:items-center items-start w-full">
+                        <div class="p-3 bg-[#E5E5E5] rounded-2xl text-sm flex items-center w-full">
+                            <select id="id_periode" name="id_periode" required class="bg-transparent w-full outline-none">
+                                @foreach ($periodes as $periode)
+                                <option class="w-full" value="{{ $periode->id }}" {{ $periode_terpilih->id == $periode->id ? 'selected' : '' }}>
+                                    {{ $periode->nama_periode }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="p-3 bg-[#E5E5E5] rounded-2xl text-sm flex items-center w-full">
+                            <select id="id_cabang" name="id_cabang" required class="bg-transparent w-full outline-none">
+                                <option value="all">All</option>
+                                @foreach ($cabangs as $cabang)
+                                <option class="w-full" value="{{ $cabang->id }}" {{ $id_cabang == $cabang->id ? 'selected' : '' }}>
+                                    {{ $cabang->nama }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="p-3 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
+                            <select id="id_departement" name="id_departement" required class="bg-transparent w-full outline-0" onchange=getBidangs()>
+                                <option value="all">All</option>
+                                @foreach ($departements as $departement)
+                                <option value="{{ $departement->id }}" {{ $id_departement == $departement->id ? 'selected' : '' }}>{{ $departement->nama_departement }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <div class="p-3 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
-                        <select id="id_bidang" name="id_bidang" required class="bg-transparent w-full outline-0">
-                            <option value="all">All</option>
-                            @foreach ($bidangs as $bidang)
-                            <option value="{{ $bidang->id }}" {{ $id_bidang == $bidang->id ? 'selected' : '' }}>{{ $bidang->nama_bidang }}</option>
-                            @endforeach
-                        </select>
+                        <div class="p-3 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
+                            <select id="id_bidang" name="id_bidang" required class="bg-transparent w-full outline-0">
+                                <option value="all">All</option>
+                                @foreach ($bidangs as $bidang)
+                                <option value="{{ $bidang->id }}" {{ $id_bidang == $bidang->id ? 'selected' : '' }}>{{ $bidang->nama_bidang }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- <button type="submit" class="ml-2 px-4 py-2 text-black">Pilih</button> -->
+                        <button type="submit" class="focus:outline-none bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-white">Sortir</button>
                     </div>
-                    <button type="submit" class="ml-2 px-4 py-2 text-black">Pilih</button>
-                    <button type="submit" name="action" value="export" class="focus:outline-none bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-white">Export Excel</button>
+                    <button type="submit" name="action" value="export" class="focus:outline-none bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-white w-fit">Export Excel</button>
                 </div>
             </form>
         </div>
@@ -56,10 +60,6 @@
         {{ session('success') }}
     </div>
     @endif
-
-    <div class="flex justify-between items-center">
-        <h1 class="lg:text-2xl text-xl font-semibold">Nilai {{$periode_terpilih->nama_periode}}</h1>
-    </div>
     <div class="table-container">
         <table class="table table-bordered mt-4">
             <thead>
