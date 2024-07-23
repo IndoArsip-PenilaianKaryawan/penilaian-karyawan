@@ -1,0 +1,21 @@
+@extends('component.sidebar')
+
+
+<div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
+    <div class="p-8 bg-white">
+        <h1 class="font-semibold text-xl text-center mb-2">Tambah Cabang</h1>
+        <form action="{{ route('cabang.store') }}" method="POST" class="gap-6 grid">
+            @csrf
+            <div class="gap-2 grid">
+                <div class="font-semibold">Nama Cabang:</div>
+                <input type="text" id="nama" name="nama" required placeholder="Masukan Nama Kompetensi" class="p-4 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
+            </div>
+            <button type="submit" class="p-4 bg-[#9F2D2D]  rounded-2xl  text-sm w-full outline-0 text-white font-semibold">Tambah</button>
+        </form>
+    </div>
+
+    <script>
+    </script>
+</div>
+@section('content-admin')
+@endsection

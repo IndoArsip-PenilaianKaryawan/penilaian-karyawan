@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\M_kompetensi;
+use App\Http\Controllers\Controller;
+use App\Models\M_cabang;
 use Illuminate\Http\Request;
 
-class KompetensiController extends Controller
+class CabangController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,10 @@ class KompetensiController extends Controller
      */
     public function index()
     {
-        // Mengambil semua data dari tabel Kompetensi
-        $kompetensi = M_kompetensi::all();
+        //
+        $cabang = M_cabang::all();
 
-        return view('kompetensi.index', ['kompetensi' => $kompetensi]);
+        return view('cabang.index', ['cabang' => $cabang]);
     }
 
     /**
@@ -29,7 +29,8 @@ class KompetensiController extends Controller
     public function create()
     {
         //
-        return view('kompetensi.create');
+
+        return view('cabang.create');
     }
 
     /**
@@ -40,21 +41,20 @@ class KompetensiController extends Controller
      */
     public function store(Request $request)
     {
+        //
         $request->validate([
-            'nama_kompetensi' => 'required',
+            'nama' => 'required',
 
         ]);
 
-        $nama_kompetensi = $request->input('nama_kompetensi');
-        $deskripsi = $request->input('deskripsi');
+        $nama = $request->input('nama');
 
-        M_kompetensi::addKompetensi([
-            'nama_kompetensi' => $nama_kompetensi,
-            'deskripsi' => $deskripsi,
+        M_cabang::addCabang([
+            'nama' => $nama,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return redirect()->route('kompetensi.index')->with('success', 'Kompetensi berhasil ditambahkan');
+        return redirect()->route('cabang.index')->with('success', 'Cabang berhasil ditambahkan');
     }
 
     /**
@@ -65,7 +65,7 @@ class KompetensiController extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**
@@ -77,12 +77,12 @@ class KompetensiController extends Controller
     public function edit($id)
     {
         //
-        $kompetensi = M_kompetensi::editKompetensi($id);
+        $cabang = M_cabang::editCabang($id);
         $view_data = [
-            'kompetensi' => $kompetensi,
+            'cabang' => $cabang
         ];
 
-        return view('kompetensi.edit', $view_data);
+        return view('cabang.edit', $view_data);
     }
 
     /**
@@ -95,22 +95,19 @@ class KompetensiController extends Controller
     public function update(Request $request, $id)
     {
         //
-
         $request->validate([
-            'nama_kompetensi' => 'required',
+            'nama' => 'required',
+
         ]);
 
-        $nama_kompetensi = $request->input('nama_kompetensi');
-        $deskripsi = $request->input('deskripsi');
-
+        $nama = $request->input('nama');
         $updateData = [
-            'nama_kompetensi' => $nama_kompetensi,
-            'deskripsi' => $deskripsi,
+            'nama' => $nama,
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-       M_kompetensi::updateKompetensi($updateData, $id);
-       return redirect()->route('kompetensi.index')->with('success', 'Kompetensi berhasil diupdate');
+        M_cabang::updateCabang($updateData, $id);
+        return redirect()->route('cabang.index')->with('success', 'Cabang berhasil diubah');
     }
 
     /**
@@ -121,7 +118,7 @@ class KompetensiController extends Controller
      */
     public function destroy($id)
     {
-        M_kompetensi::deleteKompetensi($id);
-        return redirect()->route('kompetensi.index')->with('success', 'Kompetensi berhaisl dihapus');
+        M_cabang::deleteCabang($id);
+        return redirect()->route('cabang.index')->with('success', 'Cabang berhasil dihapus');
     }
 }

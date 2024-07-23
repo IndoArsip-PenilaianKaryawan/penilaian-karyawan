@@ -75,7 +75,6 @@ class PenilaiController extends Controller
 
 
             // Assuming $user->id_departement contains the department ID from the user's selected field
-
             $departement_id = DB::table('m_bidang as mb')
             ->where('mb.id', $user->id_bidang)
             ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')

@@ -1,5 +1,11 @@
 @extends('component.sidebar2')
 @section('content-penilai')
+
+@if (session('success'))
+<div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+    {{ session('success') }}
+</div>
+@endif
 <div class="min-h-screen bg-[#F5F6F7]">
     <div class="p-4 xl:ml-80">
 

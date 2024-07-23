@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\M_bidang;
+use App\Models\M_cabang;
 use App\Models\M_departement;
 use App\Models\M_jabatan;
 use App\Models\M_karyawan;
@@ -23,10 +24,11 @@ class KaryawanController extends Controller
     public function create()
     {
         $departements = M_departement::all();
+        $cabangs = M_cabang::all();
         $bidangs = M_bidang::all();
         $karyawans = M_karyawan::all();
         $jabatans = M_jabatan::all();
-        return view('karyawan.create', compact('bidangs', 'karyawans', 'departements', 'jabatans'));
+        return view('karyawan.create', compact('bidangs', 'karyawans', 'departements', 'jabatans', 'cabangs'));
     }
 
     // Menyimpan karyawan baru
@@ -40,6 +42,7 @@ class KaryawanController extends Controller
             'id_jabatan' => 'required|numeric',
             'id_approval_1' => 'required|numeric',
             'id_approval_2' => 'required|numeric',
+            'id_cabang' => 'required|numeric',
         ]);
 
         if ($request->is_penilai == 'on') {
@@ -63,11 +66,12 @@ class KaryawanController extends Controller
             'id_approval_1' => $request->id_approval_1,
             'id_approval_2' => $request->id_approval_2,
             'is_penilai' => $is_penilai,
+            'id_cabang' => $request->id_cabang,
             'password' => $password,
         ]);
 
         return redirect()->route('karyawan.index')
-            ->with('success', 'Karyawan berhasil ditambahkan.');
+            ->with('success', 'Karyawan berhasil ditambahkan');
     }
 
     // Menampilkan detail karyawan
@@ -84,7 +88,8 @@ class KaryawanController extends Controller
         $karyawans = M_karyawan::all();
         $bidangs = M_bidang::all();
         $jabatans = M_jabatan::all();
-        return view('karyawan.edit', compact('bidangs', 'departements', 'karyawans', 'jabatans', 'karyawan'));
+        $cabangs = M_cabang::all();
+        return view('karyawan.edit', compact('bidangs', 'departements', 'karyawans', 'jabatans', 'karyawan', 'cabangs'));
     }
 
     // Mengupdate karyawan
@@ -93,6 +98,7 @@ class KaryawanController extends Controller
         $request->validate([
             'nama' => 'required',
             'no_pegawai' => 'required',
+            'id_cabang' => 'required|numeric',
             'id_bidang' => 'required|numeric',
             'id_atasan' => 'required|numeric',
             'id_jabatan' => 'required|numeric',
@@ -115,6 +121,7 @@ class KaryawanController extends Controller
         DB::table('m_karyawan')->where('id', $id)->update([
             'nama' => $request->nama,
             'no_pegawai' => $request->no_pegawai,
+            'id_cabang' => $request->id_cabang,
             'id_bidang' => $request->id_bidang,
             'id_atasan' => $request->id_atasan,
             'id_jabatan' => $request->id_jabatan,
@@ -124,17 +131,7 @@ class KaryawanController extends Controller
             'password' => $password,
         ]);
         return redirect()->route('karyawan.index')
-            ->with('success', 'Karyawan berhasil diupdate.');
-        // $request->validate([
-        //     'nama' => 'required',
-        //     'jabatan' => 'required',
-        //     'gaji' => 'required|numeric',
-        // ]);
-
-        // $karyawan->update($request->all());
-
-        // return redirect()->route('karyawan.index')
-        //     ->with('success', 'Karyawan berhasil diupdate.');
+            ->with('success', 'Karyawan berhasil diupdate');
     }
 
     // Menghapus karyawan
@@ -143,6 +140,6 @@ class KaryawanController extends Controller
         DB::table('m_karyawan')->where('id', $id)->delete();
 
         return redirect()->route('karyawan.index')
-            ->with('success', 'Karyawan berhasil dihapus.');
+            ->with('success', 'Karyawan berhasil dihapus');
     }
 }

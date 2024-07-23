@@ -20,6 +20,7 @@ class M_karyawan extends Authenticatable
         'id_jabatan',
         'id_approval_1',
         'id_approval_2',
+        'id_cabang',
         'password',
         'is_penilai',
     ];
@@ -27,6 +28,11 @@ class M_karyawan extends Authenticatable
     public function bidang()
     {
         return $this->belongsTo(M_bidang::class, 'id_bidang');
+    }
+
+    public function cabang()
+    {
+        return $this->belongsTo(M_cabang::class, 'id_cabang');
     }
 
     public function atasan()

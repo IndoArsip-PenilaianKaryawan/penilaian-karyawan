@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CabangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KompetensiController;
@@ -20,6 +21,10 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth:admin'])->group(function () {
     // Menampilkan dashboard
     Route::get('admin', [DashboardController::class, 'index'])->name('beranda');
+    Route::get('rekap', [DashboardController::class, 'rekapNilai'])->name('rekap_nilai');
+    Route::post('/rekap/nilai/filter', [DashboardController::class, 'rekapNilai'])->name('rekap_nilai.filter');
+    Route::get('/export-rekap', [DashboardController::class, 'exportRekap'])->name('export.rekap');
+    Route::post('/export-rekap', [DashboardController::class, 'exportRekap'])->name('export.rekap');
 
     // karyawan
     // Menampilkan form untuk membuat karyawan baru
@@ -62,6 +67,15 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::patch('periode/{id}', [PeriodeController::class, 'update'])->name('periode.update');
     // Menghapus data periode
     Route::delete('periode/{id}', [PeriodeController::class, 'destroy'])->name('periode.destroy');
+
+
+    // cabang
+    Route::get('cabang', [CabangController::class, 'index'])->name('cabang.index');
+    Route::get('cabang/create', [CabangController::class, 'create'])->name('cabang.create');
+    Route::post('cabang', [CabangController::class, 'store'])->name('cabang.store');
+    Route::get('cabang/{id}/edit', [CabangController::class, 'edit'])->name('cabang.edit');
+    Route::patch('cabang/{id}', [CabangController::class, 'update'])->name('cabang.update');
+    Route::delete('cabang/{id}', [CabangController::class, 'destroy'])->name('cabang.destroy');
 });
 
 // penilai

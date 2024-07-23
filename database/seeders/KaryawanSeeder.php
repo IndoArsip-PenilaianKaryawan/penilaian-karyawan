@@ -20,6 +20,7 @@ class KaryawanSeeder extends Seeder
                 'id' => 1,
                 'nama' => 'Aditya',
                 'no_pegawai' => '12345678',
+                'id_cabang' => 1,
                 'password' => Hash::make('12345678') ,
                 'id_bidang' => NULL,
                 'id_jabatan' => 1,  // ceo
@@ -32,6 +33,7 @@ class KaryawanSeeder extends Seeder
                 'id' => 2,
                 'nama' => 'Budi',
                 'no_pegawai' => '12345679',
+                'id_cabang' => 1,
                 'password' => Hash::make('12345679'),
                 'id_bidang' => 3210101,  // IT
                 'id_jabatan' => 2,  // direktur
@@ -44,6 +46,7 @@ class KaryawanSeeder extends Seeder
                 'id' => 3,
                 'nama' => 'Citra',
                 'no_pegawai' => '12345680',
+                'id_cabang' => 1,
                 'password' => Hash::make('12345680'),
                 'id_bidang' => 3210101,  // IT
                 'id_jabatan' => 3,  // manager
@@ -56,6 +59,7 @@ class KaryawanSeeder extends Seeder
                 'id' => 4,
                 'nama' => 'Dewi',
                 'no_pegawai' => '12345681',
+                'id_cabang' => 1,
                 'password' => Hash::make('12345681'),
                 'id_bidang' => 3210101,  // IT
                 'id_jabatan' => 4,  // kepala bagian
@@ -68,6 +72,7 @@ class KaryawanSeeder extends Seeder
                 'id' => 5,
                 'nama' => 'Eka',
                 'no_pegawai' => '12345682',
+                'id_cabang' => 1,
                 'password' => NULL,
                 'id_bidang' => 3210101,  // IT
                 'id_jabatan' => 5,  // karyawan
@@ -80,6 +85,7 @@ class KaryawanSeeder extends Seeder
                 'id' => 6,
                 'nama' => 'Fajar',
                 'no_pegawai' => '12345683',
+                'id_cabang' => 1,
                 'password' => Hash::make('12345683'),
                 'id_bidang' => 3210201,  // HRD
                 'id_jabatan' => 2,  // direktur
@@ -92,6 +98,7 @@ class KaryawanSeeder extends Seeder
                 'id' => 7,
                 'nama' => 'Gita',
                 'no_pegawai' => '12345684',
+                'id_cabang' => 1,
                 'password' => Hash::make('12345684'),
                 'id_bidang' => 3210201,  // HRD
                 'id_jabatan' => 3,  // manager
@@ -99,7 +106,7 @@ class KaryawanSeeder extends Seeder
                 'id_approval_1' => 6,  // Fajar
                 'id_approval_2' => 1,  // Aditya
                 'is_penilai' => true,
-            ],    
+            ],
         ]);
     }
 }

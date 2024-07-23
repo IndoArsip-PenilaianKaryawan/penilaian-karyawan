@@ -31,7 +31,7 @@
             ]);
 
             return redirect()->route('periode.index')
-                ->with('success', 'Periode berhasil ditambahkan.');
+                ->with('success', 'Periode berhasil ditambahkan');
         }
 
         public function edit($id)
@@ -53,7 +53,7 @@
             $periode->save();
 
             return redirect()->route('periode.index')
-                ->with('success', 'Periode berhasil diperbarui.');
+                ->with('success', 'Periode berhasil diperbarui');
         }
 
         public function destroy($id)
@@ -62,6 +62,6 @@
             $periode->delete();
 
             return redirect()->route('periode.index')
-                ->with('success', 'Periode berhasil dihapus.');
+                ->with('success', 'Periode berhasil dihapus');
         }
     }

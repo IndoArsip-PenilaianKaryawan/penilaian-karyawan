@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             KompetensiSeeder::class,
             DepartementSeeder::class,
             BidangSeeder::class,
+            CabangSeeder::class,
             KaryawanSeeder::class,
             NilaiKaryawanSeeder::class,
 

@@ -49,9 +49,9 @@
                     <th class="text-xs md:text-sm">Nilai 3</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="border">
                 @foreach($karyawans as $karyawan)
-                <tr>
+                <tr class="border">
                     <td class="text-xs md:text-sm">{{ $karyawan->no_pegawai }}</td>
                     <td class="text-xs md:text-sm">{{ $karyawan->nama }}</td>
                     <td class="text-xs md:text-sm">
@@ -97,7 +97,7 @@
                         <a class="bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded-full">BELUM ADA NILAI</a>
                         @endif
                         @else
-                        <div class="flex flex-col justify-center items-center gap-2">
+                        <div class="flex flex-col justify-center items-center lg:gap-2 gap-1">
                             <p class="{{ $nilai_karyawan[$karyawan->id]['status_approval_1'] == 'Approved' ? 'text-green-600' : 'text-red-500' }}">
                                 {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_1'], 2) }}
                             </p>
@@ -134,7 +134,7 @@
                         @endif
 
                         @else
-                        <div class="flex flex-col justify-center items-center gap-2">
+                        <div class="flex flex-col justify-center items-center lg:gap-2 gap-1">
                             <p>
                                 {{ number_format($nilai_karyawan[$karyawan->id]['nilai_approval_2'], 2) }}
                             </p>

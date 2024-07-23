@@ -1,4 +1,6 @@
 @extends('component.sidebar')
+
+
 <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
     <div class="p-8 bg-white">
         <h1 class="font-semibold text-xl text-center mb-2">Tambah Kompetensi</h1>
@@ -22,4 +24,3 @@
 </div>
 @section('content-admin')
 @endsection
-

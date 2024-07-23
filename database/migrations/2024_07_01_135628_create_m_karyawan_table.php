@@ -25,6 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_jabatan');
             $table->unsignedBigInteger('id_approval_1')->nullable();
             $table->unsignedBigInteger('id_approval_2')->nullable();
+            $table->unsignedBigInteger('id_cabang')->nullable();
 
             //foreign
             $table->foreign('id_bidang')->references('id')->on('m_bidang');
@@ -32,6 +33,7 @@ return new class extends Migration
             $table->foreign('id_jabatan')->references('id')->on('m_jabatan');
             $table->foreign('id_approval_1')->references('id')->on('m_karyawan');
             $table->foreign('id_approval_2')->references('id')->on('m_karyawan');
+            $table->foreign('id_cabang')->references('id')->on('m_cabang');
         });
     }
 

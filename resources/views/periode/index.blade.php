@@ -63,17 +63,22 @@
 
 <body>
     @include ('component.sidebar')
+
+    @if (session('success'))
+    <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+        {{ session('success') }}
+    </div>
+    @endif
+    
     <div class="px-4 py-8 xl:ml-80 bg-[#F5F6F7] min-h-screen">
         <h1 class="text-xl md:text-3xl font-semibold ">Halaman Periode</h1>
         <div class="my-4 flex md:flex-row flex-col  w-full gap-2 ">
             <div class="flex justify-start md:w-1/3">
                 <div class="p-2 md:p-4 bg-[#E5E5E5]  rounded-l-2xl flex  items-center text-xs md:text-sm w-full">
                     <i class="fas fa-search text-[#34364A]  pr-2"></i>
-                    <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text"
-                        placeholder="Cari Periode..." onkeyup="searchPeriode()">
+                    <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text" placeholder="Cari Periode..." onkeyup="searchPeriode()">
                 </div>
-                <button class="py-2 md:py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl text-xs md:text-sm"
-                    onclick="searchPeriode()">
+                <button class="py-2 md:py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl text-xs md:text-sm" onclick="searchPeriode()">
                     Cari
                 </button>
             </div>
@@ -82,9 +87,9 @@
         </div>
 
         @if (session('success'))
-            <div>
-                {{ session('success') }}
-            </div>
+        <div>
+            {{ session('success') }}
+        </div>
         @endif
 
         <table border="1" id="periodeTable">
@@ -98,22 +103,19 @@
             </thead>
             <tbody>
                 @foreach ($periodes as $periode)
-                    <tr>
-                        <td class="text-xs md:text-sm">{{ $periode->id }}</td>
-                        <td class="text-xs md:text-sm">{{ $periode->nama_periode }}</td>
-                        <td class="text-xs md:text-sm">{{ $periode->tahun }}</td>
-                        <td class="text-xs md:text-sm">
-                            <a href="{{ route('periode.edit', $periode->id) }}"
-                                class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">EDIT</a>
-                            <form action="{{ route('periode.destroy', $periode->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">HAPUS</button>
-                            </form>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="text-xs md:text-sm">{{ $periode->id }}</td>
+                    <td class="text-xs md:text-sm">{{ $periode->nama_periode }}</td>
+                    <td class="text-xs md:text-sm">{{ $periode->tahun }}</td>
+                    <td class="text-xs md:text-sm">
+                        <a href="{{ route('periode.edit', $periode->id) }}" class="bg-[#EBFFE9] text-[#2D9F46] px-2 py-1 rounded-full">EDIT</a>
+                        <form action="{{ route('periode.destroy', $periode->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-[#FCE9FF] text-[#9F2D2D] px-2 py-1 rounded-full">HAPUS</button>
+                        </form>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>

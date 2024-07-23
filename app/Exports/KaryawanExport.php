@@ -6,7 +6,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Illuminate\Support\Facades\DB;
 use App\Models\M_karyawan;
-use App\Models\M_nilai;
 use App\Models\M_periode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -27,7 +26,7 @@ class KaryawanExport
         $sheet->setCellValue('F1', 'Nilai 2');
         $sheet->setCellValue('G1', 'Nilai 3');
 
-        // Get logged in user
+        
         $user = Auth::guard('user')->user();
 
         if ($user) {
