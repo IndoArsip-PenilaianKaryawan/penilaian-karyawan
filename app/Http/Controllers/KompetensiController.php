@@ -16,7 +16,7 @@ class KompetensiController extends Controller
     public function index()
     {
         // Mengambil semua data dari tabel Kompetensi
-        $kompetensi = M_kompetensi::all();
+        $kompetensi = M_kompetensi::paginate(10);
 
         return view('kompetensi.index', ['kompetensi' => $kompetensi]);
     }

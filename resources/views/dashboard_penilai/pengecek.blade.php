@@ -50,7 +50,7 @@
                 </tr>
             </thead>
             <tbody class="border">
-                @foreach($karyawans as $karyawan)
+                @foreach($karyawansPaginated as $karyawan)
                 <tr class="border">
                     <td class="text-xs md:text-sm">{{ $karyawan->no_pegawai }}</td>
                     <td class="text-xs md:text-sm">{{ $karyawan->nama }}</td>
@@ -147,6 +147,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $karyawansPaginated->links() }}
     </div>
 </div>
 @endsection

@@ -37,5 +37,6 @@
             @endforeach
         </tbody>
     </table>
+    {{ $cabang->links() }}
 </div>
 @endsection

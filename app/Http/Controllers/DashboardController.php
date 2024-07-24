@@ -10,6 +10,8 @@ use App\Models\M_karyawan;
 use App\Models\M_kompetensi;
 use App\Models\m_periode;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -159,6 +161,7 @@ class DashboardController extends Controller
         $id_cabang = $request->input('id_cabang');
         $id_bidang = $request->input('id_bidang');
         $id_departement = $request->input('id_departement');
+        $search = $request->input('search');
 
         // Jika id_periode belum dipilih, ambil periode terbaru
         if (!$id_periode) {
@@ -189,7 +192,33 @@ class DashboardController extends Controller
             });
         }
 
+        // Search
+        if ($search) {
+            $karyawansQuery->where(function ($query) use ($search) {
+                $query->where('m_karyawan.nama', 'like', '%' . $search . '%')
+                    ->orWhere('m_karyawan.no_pegawai', 'like', '%' . $search . '%');
+            });
+        }
+
         $karyawans = $karyawansQuery->get();
+
+        //buat pagination
+        $perPage = 10;
+
+        // Tentukan halaman saat ini
+        $currentPage = Paginator::resolveCurrentPage();
+
+        // Potong data untuk halaman saat ini
+        $currentItems = $karyawans->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        // Buat instance LengthAwarePaginator
+        $karyawansPaginated = new LengthAwarePaginator(
+            $currentItems,
+            $karyawans->count(),
+            $perPage,
+            $currentPage,
+            ['path' => Paginator::resolveCurrentPath()]
+        );
 
         $periode_terpilih = m_periode::find($id_periode);
         if (!$periode_terpilih) {
@@ -260,7 +289,7 @@ class DashboardController extends Controller
         
         $averageNilaiApproval2 = $totalEmployees > 0 ? $totalNilaiApproval2 / $totalEmployees : 0;
 
-        return view('dashboard_adm.rekap', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'cabangs', 'bidangs', 'departements', 'id_cabang', 'id_bidang', 'id_departement', 'averageNilaiApproval2'));
+        return view('dashboard_adm.rekap', compact('karyawansPaginated', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'cabangs', 'bidangs', 'departements', 'id_cabang', 'id_bidang', 'id_departement', 'averageNilaiApproval2'));
     }
 
 

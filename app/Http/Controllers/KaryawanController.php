@@ -14,9 +14,19 @@ use Illuminate\Support\Facades\Hash;
 class KaryawanController extends Controller
 {
     // Menampilkan daftar karyawan
-    public function index()
+    public function index(Request $request)
     {
-        $karyawans = M_karyawan::all();
+        $search = $request->input('search');
+
+        $karyawansQuery = M_karyawan::query();
+
+        if ($search) {
+            $karyawansQuery->where('nama', 'like', '%' . $search . '%')
+                ->orWhere('no_pegawai', 'like', '%' . $search . '%');
+        }
+
+        $karyawans = $karyawansQuery->paginate(10);
+
         return view('karyawan.index', compact('karyawans'));
     }
 

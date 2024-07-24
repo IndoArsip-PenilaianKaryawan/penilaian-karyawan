@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Exports\KaryawanExport;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class PenilaiController extends Controller
 {
@@ -46,7 +48,7 @@ class PenilaiController extends Controller
 
             // Ambil data karyawan berdasarkan periode yang dipilih
             $karyawans = M_karyawan::join('m_bidang', 'm_karyawan.id_bidang', '=', 'm_bidang.id')
-            ->where('m_karyawan.id_atasan', $user->id)
+                ->where('m_karyawan.id_atasan', $user->id)
                 ->select('m_karyawan.*', 'm_karyawan.no_pegawai', 'm_bidang.nama_bidang')
                 ->get();
 
@@ -63,104 +65,104 @@ class PenilaiController extends Controller
 
             // Ambil rata-rata nilai bidang user yang login
             $rataNilaiBidang = DB::table('m_nilai as mn')
-            ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
-            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
-            ->select('mb.id', 'mb.nama_bidang', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_bidang'))
-            ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
-            })
-            ->where('mb.id', $user->id_bidang)
-            ->groupBy('mb.id', 'mb.nama_bidang')
-            ->first();
+                ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
+                ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+                ->select('mb.id', 'mb.nama_bidang', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_bidang'))
+                ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
+                    $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
+                })
+                ->where('mb.id', $user->id_bidang)
+                ->groupBy('mb.id', 'mb.nama_bidang')
+                ->first();
 
 
             // Assuming $user->id_departement contains the department ID from the user's selected field
             $departement_id = DB::table('m_bidang as mb')
-            ->where('mb.id', $user->id_bidang)
-            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
-            ->select('d.id')
-            ->value('id');
+                ->where('mb.id', $user->id_bidang)
+                ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+                ->select('d.id')
+                ->value('id');
 
 
             $rataAllBidang = DB::table('m_nilai as mn')
-            ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
-            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
-            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
-            ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
-            })
-            ->select('mb.id', 'mb.nama_bidang', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_bidang'))
-            ->where('d.id', $departement_id)
-            ->groupBy('mb.id', 'mb.nama_bidang')
-            ->get();
+                ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
+                ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+                ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+                ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
+                    $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
+                })
+                ->select('mb.id', 'mb.nama_bidang', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_bidang'))
+                ->where('d.id', $departement_id)
+                ->groupBy('mb.id', 'mb.nama_bidang')
+                ->get();
 
             $rataDapartemen = DB::table('m_nilai as mn')
-            ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
-            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
-            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
-            ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
-            })
-            ->select('d.id', 'd.nama_departement', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_departement'))
-            ->where('d.id', $departement_id)
-            ->groupBy('d.id', 'd.nama_departement')
-            ->first();
+                ->join('m_karyawan as mk', 'mn.id_karyawan', '=', 'mk.id')
+                ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+                ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+                ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
+                    $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
+                })
+                ->select('d.id', 'd.nama_departement', DB::raw('AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT("$[", numbers.i, "]"))) AS UNSIGNED)) AS rata_nilai_departement'))
+                ->where('d.id', $departement_id)
+                ->groupBy('d.id', 'd.nama_departement')
+                ->first();
 
             // ! Manager
 
             $inkompetenKaryawanManager = DB::table('m_karyawan as mk')
-            ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
-            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
-            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+                ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
+                ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+                ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
                 ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
                     $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
                 })
-            ->where('d.id', $departement_id)
-              ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
-            ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
-            ->having('average', '<', 3)
-            ->orderBy('average', 'desc')
-            ->get();
+                ->where('d.id', $departement_id)
+                ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
+                ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
+                ->having('average', '<', 3)
+                ->orderBy('average', 'desc')
+                ->get();
 
             $kompetenKaryawanManager = DB::table('m_karyawan as mk')
-            ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
-            ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
-            ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
+                ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
+                ->join('m_bidang as mb', 'mb.id', '=', 'mk.id_bidang')
+                ->join('m_departement as d', 'd.id', '=', 'mb.id_departement')
                 ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
                     $join->on(DB::raw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))"), 'IS NOT', DB::raw('NULL'));
                 })
-            ->where('d.id', $departement_id)
-              ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
-            ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
-            ->having('average', '>', 2)
-            ->orderBy('average', 'desc')
-            ->get();
+                ->where('d.id', $departement_id)
+                ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
+                ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
+                ->having('average', '>', 2)
+                ->orderBy('average', 'desc')
+                ->get();
 
 
 
             // ! Kepala Bagian
             // Ambil karyawan di bidang user yang login dengan average kurang dari 3
             $inkompetenKaryawan = DB::table('m_karyawan as mk')
-            ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
-            ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
-            })
-            ->where('mk.id_bidang', $user->id_bidang)
-            ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
-            ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
-            ->having('average', '<', 3)
-            ->get();
+                ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
+                ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
+                    $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
+                })
+                ->where('mk.id_bidang', $user->id_bidang)
+                ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
+                ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
+                ->having('average', '<', 3)
+                ->get();
 
             $kompetenKaryawan = DB::table('m_karyawan as mk')
-            ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
-            ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
-                $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
-            })
-            ->where('mk.id_bidang', $user->id_bidang)
-            ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
-            ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
-            ->having('average', '>', 2)
-            ->get();
+                ->join('m_nilai as mn', 'mn.id_karyawan', '=', 'mk.id')
+                ->join(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"), function ($join) {
+                    $join->whereRaw("JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']')) IS NOT NULL");
+                })
+                ->where('mk.id_bidang', $user->id_bidang)
+                ->select('mk.id', 'mk.no_pegawai', 'mk.nama', DB::raw("AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(mn.nilai_approval_2, CONCAT('$[', numbers.i, ']'))) AS UNSIGNED)) AS average"))
+                ->groupBy('mk.id', 'mk.nama', 'mk.no_pegawai')
+                ->having('average', '>', 2)
+                ->get();
 
             $totalInkompetenManager = count($inkompetenKaryawanManager);
             $totalKompetenManager = count($kompetenKaryawanManager);
@@ -173,11 +175,11 @@ class PenilaiController extends Controller
             foreach ($karyawans as $karyawan) {
                 // Menggunakan raw query untuk menghitung rata-rata dari array JSON
                 $average = DB::table('m_nilai')
-                ->select(DB::raw("
+                    ->select(DB::raw("
                     AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_indeks
                 "))
-                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
-                ->where('id_karyawan', $karyawan->id)
+                    ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
+                    ->where('id_karyawan', $karyawan->id)
                     ->where('id_periode', $id_periode)
                     ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
                     ->groupBy('id_karyawan', 'id_periode')
@@ -209,8 +211,8 @@ class PenilaiController extends Controller
                 }
             }
 
-        $dataLogin = M_karyawan::where('id', $user->id)->first();
-            return view('dashboard_penilai.index', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'inkompetenKaryawan', 'kompetenKaryawan', 'rataNilaiBidang', 'total', 'totalInkompeten', 'totalKompeten','dataLogin', 'rataAllBidang', 'inkompetenKaryawanManager', 'kompetenKaryawanManager', 'totalInkompetenManager', 'totalKompetenManager', 'rataDapartemen'));
+            $dataLogin = M_karyawan::where('id', $user->id)->first();
+            return view('dashboard_penilai.index', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'inkompetenKaryawan', 'kompetenKaryawan', 'rataNilaiBidang', 'total', 'totalInkompeten', 'totalKompeten', 'dataLogin', 'rataAllBidang', 'inkompetenKaryawanManager', 'kompetenKaryawanManager', 'totalInkompetenManager', 'totalKompetenManager', 'rataDapartemen'));
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
         }
@@ -235,9 +237,27 @@ class PenilaiController extends Controller
 
             // Ambil data karyawan berdasarkan periode yang dipilih
             $karyawans = M_karyawan::join('m_bidang', 'm_karyawan.id_bidang', '=', 'm_bidang.id')
-            ->where('m_karyawan.id_atasan', $user->id)
+                ->where('m_karyawan.id_atasan', $user->id)
                 ->select('m_karyawan.*', 'm_karyawan.no_pegawai', 'm_bidang.nama_bidang')
                 ->get();
+
+            //buat pagination
+            $perPage = 10;
+
+            // Tentukan halaman saat ini
+            $currentPage = Paginator::resolveCurrentPage();
+
+            // Potong data untuk halaman saat ini
+            $currentItems = $karyawans->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+            // Buat instance LengthAwarePaginator
+            $karyawansPaginated = new LengthAwarePaginator(
+                $currentItems,
+                $karyawans->count(),
+                $perPage,
+                $currentPage,
+                ['path' => Paginator::resolveCurrentPath()]
+            );
 
             // Ambil data periode yang dipilih
             $periode_terpilih = m_periode::find($id_periode);
@@ -255,11 +275,11 @@ class PenilaiController extends Controller
             foreach ($karyawans as $karyawan) {
                 // Menggunakan raw query untuk menghitung rata-rata dari array JSON
                 $average = DB::table('m_nilai')
-                ->select(DB::raw("
+                    ->select(DB::raw("
                     AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_indeks
                 "))
-                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
-                ->where('id_karyawan', $karyawan->id)
+                    ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
+                    ->where('id_karyawan', $karyawan->id)
                     ->where('id_periode', $id_periode)
                     ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
                     ->groupBy('id_karyawan', 'id_periode')
@@ -294,7 +314,7 @@ class PenilaiController extends Controller
                 }
             }
 
-            return view('dashboard_penilai.penilai', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan'));
+            return view('dashboard_penilai.penilai', compact('karyawansPaginated', 'periodes', 'periode_terpilih', 'nilai_karyawan'));
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
         }
@@ -306,7 +326,7 @@ class PenilaiController extends Controller
         $user = Auth::guard('user')->user(); // Ambil user yang sudah login
         if ($user) {
             $action = $request->input('action');
-             $id_periode = $request->input('id_periode'); // Ambil id_periode yang dipilih dari form
+            $id_periode = $request->input('id_periode'); // Ambil id_periode yang dipilih dari form
 
             // Jika id_periode belum dipilih, ambil periode terbaru
             if (!$id_periode) {
@@ -325,13 +345,30 @@ class PenilaiController extends Controller
 
             // Ambil data karyawan berdasarkan periode yang dipilih
             $karyawans = M_karyawan::join('m_bidang', 'm_karyawan.id_bidang', '=', 'm_bidang.id')
-            ->where(function ($query) use ($user) {
-                $query->where('m_karyawan.id_approval_1', $user->id)
-                    ->orWhere('m_karyawan.id_approval_2', $user->id);
-            })
+                ->where(function ($query) use ($user) {
+                    $query->where('m_karyawan.id_approval_1', $user->id)
+                        ->orWhere('m_karyawan.id_approval_2', $user->id);
+                })
                 ->select('m_karyawan.*', 'm_karyawan.no_pegawai', 'm_bidang.nama_bidang')
                 ->get();
 
+            //buat pagination
+            $perPage = 10;
+
+            // Tentukan halaman saat ini
+            $currentPage = Paginator::resolveCurrentPage();
+
+            // Potong data untuk halaman saat ini
+            $currentItems = $karyawans->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+            // Buat instance LengthAwarePaginator
+            $karyawansPaginated = new LengthAwarePaginator(
+                $currentItems,
+                $karyawans->count(),
+                $perPage,
+                $currentPage,
+                ['path' => Paginator::resolveCurrentPath()]
+            );
             // Ambil data periode yang dipilih
             $periode_terpilih = m_periode::find($id_periode);
 
@@ -348,11 +385,11 @@ class PenilaiController extends Controller
             foreach ($karyawans as $karyawan) {
                 // Menggunakan raw query untuk menghitung rata-rata dari array JSON
                 $average = DB::table('m_nilai')
-                ->select(DB::raw("
+                    ->select(DB::raw("
                     AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_indeks
                 "))
-                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
-                ->where('id_karyawan', $karyawan->id)
+                    ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
+                    ->where('id_karyawan', $karyawan->id)
                     ->where('id_periode', $id_periode)
                     ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
                     ->groupBy('id_karyawan', 'id_periode')
@@ -360,11 +397,11 @@ class PenilaiController extends Controller
 
                 // nilai approval 1
                 $nilai_approval_1 = DB::table('m_nilai')
-                ->select(DB::raw("
+                    ->select(DB::raw("
                     AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(nilai_approval_1, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_nilai_approval_1
                 "))
-                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
-                ->where('id_karyawan', $karyawan->id)
+                    ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
+                    ->where('id_karyawan', $karyawan->id)
                     ->where('id_periode', $id_periode)
                     ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
                     ->groupBy('id_karyawan', 'id_periode')
@@ -373,11 +410,11 @@ class PenilaiController extends Controller
 
                 // nilai approval 2
                 $nilai_approval_2 = DB::table('m_nilai')
-                ->select(DB::raw("
+                    ->select(DB::raw("
                     AVG(CAST(JSON_UNQUOTE(JSON_EXTRACT(JSON_EXTRACT(nilai_approval_2, CONCAT('$[', numbers.i, ']')), '$')) AS UNSIGNED)) AS rata_rata_nilai_approval_2
                 "))
-                ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
-                ->where('id_karyawan', $karyawan->id)
+                    ->crossJoin(DB::raw("(SELECT 0 i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) numbers"))
+                    ->where('id_karyawan', $karyawan->id)
                     ->where('id_periode', $id_periode)
                     ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
                     ->groupBy('id_karyawan', 'id_periode')
@@ -385,8 +422,8 @@ class PenilaiController extends Controller
 
                 // Ambil data status approval
                 $nilai = DB::table('m_nilai')
-                ->select('indeks', 'status_approval_1', 'status_approval_2')
-                ->where('id_karyawan', $karyawan->id)
+                    ->select('indeks', 'status_approval_1', 'status_approval_2')
+                    ->where('id_karyawan', $karyawan->id)
                     ->where('id_periode', $id_periode)
                     ->first();
 
@@ -413,7 +450,7 @@ class PenilaiController extends Controller
                 }
             }
 
-            return view('dashboard_penilai.pengecek', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'user'));
+            return view('dashboard_penilai.pengecek', compact('karyawansPaginated', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'user'));
         } else {
             return redirect()->route('login')->withErrors(['msg' => 'User not authenticated']);
         }
@@ -473,8 +510,6 @@ class PenilaiController extends Controller
 
 
         return redirect()->route('dashboard_penilai.penilai')->with('success', 'Data berhasil ditambahkan');
-
-
     }
 
     /**
@@ -508,7 +543,7 @@ class PenilaiController extends Controller
         $periodes = M_periode::orderBy('created_at', 'desc')->get();
 
 
-        return view('dashboard_penilai.edit', compact('karyawan', 'kompetensis','periodes', 'namaKaryawan'));
+        return view('dashboard_penilai.edit', compact('karyawan', 'kompetensis', 'periodes', 'namaKaryawan'));
     }
     public function editPeriksaNilai1($id)
     {
@@ -524,7 +559,7 @@ class PenilaiController extends Controller
         $periodes = M_periode::orderBy('created_at', 'desc')->get();
 
 
-        return view('dashboard_penilai.editPeriksa', compact('karyawan', 'kompetensis','periodes', 'namaKaryawan'));
+        return view('dashboard_penilai.editPeriksa', compact('karyawan', 'kompetensis', 'periodes', 'namaKaryawan'));
     }
     public function editPeriksaNilai2($id)
     {
@@ -540,7 +575,7 @@ class PenilaiController extends Controller
         $periodes = M_periode::orderBy('created_at', 'desc')->get();
 
 
-        return view('dashboard_penilai.editPeriksa2', compact('karyawan', 'kompetensis','periodes', 'namaKaryawan'));
+        return view('dashboard_penilai.editPeriksa2', compact('karyawan', 'kompetensis', 'periodes', 'namaKaryawan'));
     }
 
 
@@ -610,7 +645,7 @@ class PenilaiController extends Controller
         return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diupdate');
     }
 
-    public function accnilai1 ($id)
+    public function accnilai1($id)
     {
         M_nilai::where('id_karyawan', $id)->update([
             'status_approval_1' => 'Approved',
@@ -618,7 +653,7 @@ class PenilaiController extends Controller
 
         return redirect()->route('dashboard_penilai.periksa')->with('success', 'Data berhasil diApproved');
     }
-    public function accnilai2 ($id)
+    public function accnilai2($id)
     {
         M_nilai::where('id_karyawan', $id)->update([
             'status_approval_2' => 'Approved',

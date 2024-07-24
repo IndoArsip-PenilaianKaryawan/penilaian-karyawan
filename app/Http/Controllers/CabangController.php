@@ -16,7 +16,7 @@ class CabangController extends Controller
     public function index()
     {
         //
-        $cabang = M_cabang::all();
+        $cabang = M_cabang::paginate(10);
 
         return view('cabang.index', ['cabang' => $cabang]);
     }

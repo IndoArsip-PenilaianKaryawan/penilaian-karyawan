@@ -7,9 +7,18 @@
 
     class PeriodeController extends Controller
     {
-        public function index()
+        public function index(Request $request)
         {
-            $periodes = M_periode::all();
+            $search = $request->input('search');
+
+            $periodesQuery = M_periode::query();
+
+            if ($search) {
+                $periodesQuery->where('nama_periode', 'like', '%' . $search . '%')
+                    ->orWhere('tahun', 'like', '%' . $search . '%');
+            }
+
+            $periodes = $periodesQuery->paginate(10);
             return view('periode.index', compact('periodes'));
         }
 

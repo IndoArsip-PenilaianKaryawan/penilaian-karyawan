@@ -52,13 +52,13 @@
                     </div>
 
                     <div class="flex justify-between items-center">
-                        <div class="my-4 flex md:flex-row flex-col  w-full gap-2">
+                        <div  class="my-4 flex md:flex-row flex-col  w-full gap-2">
                             <div class=" flex justify-start md:w-1/3 ">
                                 <div class=" p-2 md:p-4 bg-[#E5E5E5] rounded-l-2xl flex items-center text-xs md:text-sm w-full">
                                     <i class="fas fa-search text-[#34364A]  pr-2"></i>
-                                    <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text" placeholder="Cari Karyawan..." onkeyup="searchKaryawan()">
+                                    <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text" placeholder="Cari Karyawan..." name="search" value="{{ request('search') }}" >
                                 </div>
-                                <button class="py-2 md:py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl text-xs md:text-sm" onclick="searchKaryawan()">
+                                <button type="submit" class="py-2 md:py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl text-xs md:text-sm" >
                                     Cari
                                 </button>
                             </div>
@@ -92,7 +92,7 @@
                 </tr>
             </thead>
             <tbody class="border">
-                @foreach($karyawans as $karyawan)
+                @foreach($karyawansPaginated as $karyawan)
                 <tr class="border">
 
                     <td class="text-xs md:text-sm">{{ $karyawan->cabang ? $karyawan->cabang->nama : 'Tidak ada' }}</td>
@@ -115,6 +115,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $karyawansPaginated->links() }}
     </div>
 </div>
 
@@ -143,24 +144,5 @@
         }
     }
 
-    function searchKaryawan() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("searchInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("karyawanTable");
-        tr = table.getElementsByTagName("tr");
-
-        for (i = 1; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[4]; // Column index for Nama
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
 </script>
 @endsection

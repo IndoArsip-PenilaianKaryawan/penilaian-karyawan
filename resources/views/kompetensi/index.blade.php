@@ -39,5 +39,6 @@
             @endforeach
         </tbody>
     </table>
+    {{ $kompetensi->links() }}
 </div>
 @endsection
