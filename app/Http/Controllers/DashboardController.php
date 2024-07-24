@@ -203,7 +203,11 @@ class DashboardController extends Controller
 
         // Fetch nilai_karyawan
         $nilai_karyawan = [];
+        $totalNilaiApproval2 = 0;
+        $totalEmployees = 0;
         foreach ($karyawans as $karyawan) {
+
+
 
             $nilai_approval_2 = DB::table('m_nilai')
                 ->select(DB::raw("
@@ -215,6 +219,8 @@ class DashboardController extends Controller
                 ->whereRaw("JSON_EXTRACT(indeks, CONCAT('$[', numbers.i, ']')) IS NOT NULL")
                 ->groupBy('id_karyawan', 'id_periode')
                 ->value('rata_rata_nilai_approval_2');
+
+
 
             $departement = DB::table('m_bidang as mb')
                 ->where('mb.id', $karyawan->id_bidang)
@@ -243,9 +249,18 @@ class DashboardController extends Controller
                     'departement' => $departement ? $departement->nama_departement : null
                 ];
             }
+
+            if ($nilai_approval_2 !== null) {
+                $totalNilaiApproval2 += $nilai_approval_2;
+                $totalEmployees++;
+            }
+
         }
 
-        return view('dashboard_adm.rekap', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'cabangs', 'bidangs', 'departements', 'id_cabang', 'id_bidang', 'id_departement'));
+        
+        $averageNilaiApproval2 = $totalEmployees > 0 ? $totalNilaiApproval2 / $totalEmployees : 0;
+
+        return view('dashboard_adm.rekap', compact('karyawans', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'cabangs', 'bidangs', 'departements', 'id_cabang', 'id_bidang', 'id_departement', 'averageNilaiApproval2'));
     }
 
 

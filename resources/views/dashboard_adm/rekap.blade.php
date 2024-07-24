@@ -4,6 +4,7 @@
     <div class="flex w-full flex-col  lg:mb-4 mb-8 gap-4">
 
         <h1 class="lg:text-3xl text-2xl font-semibold">Halaman Rekap</h1>
+
         <div class="flex ml-4">
 
             <form action="{{ route('rekap_nilai.filter') }}" method="POST" class="w-full">
@@ -21,7 +22,7 @@
                         </div>
                         <div class="p-3 bg-[#E5E5E5] rounded-2xl text-sm flex items-center w-full">
                             <select id="id_cabang" name="id_cabang" required class="bg-transparent w-full outline-none">
-                                <option value="all">All</option>
+                                <option value="all">All Cabang</option>
                                 @foreach ($cabangs as $cabang)
                                 <option class="w-full" value="{{ $cabang->id }}" {{ $id_cabang == $cabang->id ? 'selected' : '' }}>
                                     {{ $cabang->nama }}
@@ -31,7 +32,7 @@
                         </div>
                         <div class="p-3 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                             <select id="id_departement" name="id_departement" required class="bg-transparent w-full outline-0" onchange=getBidangs()>
-                                <option value="all">All</option>
+                                <option value="all">All Departement</option>
                                 @foreach ($departements as $departement)
                                 <option value="{{ $departement->id }}" {{ $id_departement == $departement->id ? 'selected' : '' }}>{{ $departement->nama_departement }}</option>
                                 @endforeach
@@ -40,7 +41,7 @@
 
                         <div class="p-3 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
                             <select id="id_bidang" name="id_bidang" required class="bg-transparent w-full outline-0">
-                                <option value="all">All</option>
+                                <option value="all">All Bagian</option>
                                 @foreach ($bidangs as $bidang)
                                 <option value="{{ $bidang->id }}" {{ $id_bidang == $bidang->id ? 'selected' : '' }}>{{ $bidang->nama_bidang }}</option>
                                 @endforeach
@@ -49,7 +50,25 @@
                         <!-- <button type="submit" class="ml-2 px-4 py-2 text-black">Pilih</button> -->
                         <button type="submit" class="focus:outline-none bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-white">Sortir</button>
                     </div>
-                    <button type="submit" name="action" value="export" class="focus:outline-none bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-white w-fit">Export Excel</button>
+
+                    <div class="flex justify-between items-center">
+                        <div class="my-4 flex md:flex-row flex-col  w-full gap-2">
+                            <div class=" flex justify-start md:w-1/3 ">
+                                <div class=" p-2 md:p-4 bg-[#E5E5E5] rounded-l-2xl flex items-center text-xs md:text-sm w-full">
+                                    <i class="fas fa-search text-[#34364A]  pr-2"></i>
+                                    <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text" placeholder="Cari Karyawan..." onkeyup="searchKaryawan()">
+                                </div>
+                                <button class="py-2 md:py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl text-xs md:text-sm" onclick="searchKaryawan()">
+                                    Cari
+                                </button>
+                            </div>
+                            <button type="submit" name="action" value="export" class="focus:outline-none bg-[#9F2D2D] font-medium rounded-lg text-sm px-5 py-2.5 text-white w-fit">Export Excel</button>
+                        </div>
+
+                        @if ($averageNilaiApproval2 > 0)
+                        <h1 class="font-semibold text-lg ">Rata-rata nilai {{number_format($averageNilaiApproval2,2)}}</h1>
+                        @endif
+                    </div>
                 </div>
             </form>
         </div>
@@ -61,7 +80,7 @@
     </div>
     @endif
     <div class="table-container">
-        <table class="table table-bordered mt-4">
+        <table id="karyawanTable" class="table table-bordered mt-4">
             <thead>
                 <tr>
                     <th class="text-xs md:text-sm">Cabang</th>
@@ -75,6 +94,7 @@
             <tbody class="border">
                 @foreach($karyawans as $karyawan)
                 <tr class="border">
+
                     <td class="text-xs md:text-sm">{{ $karyawan->cabang ? $karyawan->cabang->nama : 'Tidak ada' }}</td>
                     <td class="text-xs md:text-sm">{{$nilai_karyawan[$karyawan->id]['departement']}}</td>
                     <td class="text-xs md:text-sm">{{ $karyawan->bidang ? $karyawan->bidang->nama_bidang : 'Tidak ada' }}</td>
@@ -120,6 +140,26 @@
                 option.textContent = bidang.nama_bidang;
                 bidangSelect.appendChild(option);
             });
+        }
+    }
+
+    function searchKaryawan() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("karyawanTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[4]; // Column index for Nama
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
         }
     }
 </script>
