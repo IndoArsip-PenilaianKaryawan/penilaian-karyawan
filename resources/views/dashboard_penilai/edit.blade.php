@@ -19,6 +19,7 @@
             @foreach ($kompetensis as $index => $kompetensi)
             <div class="gap-4 mb-6 grid">
                 <p class="font-semibold text-xl">{{ $kompetensi->nama_kompetensi }}</p>
+                <p class="font-semibold text-base">{{ $kompetensi->deskripsi }}</p>
                 <div class="flex flex-wrap items-center lg:gap-8 gap-4">
                     <p class="font-semibold">Tidak baik</p>
                     <div class="grid lg:w-[44rem] w-full max-w-3xl  lg:grid-cols-4 grid-cols-1 gap-2 rounded-xl bg-gray-200 p-2">

@@ -52,23 +52,22 @@
                 </div>
                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <h3 id="modal-title" class="text-xl font-semibold leading-6 text-gray-900">
-                        Mengupdate Nilai Karyawan
+                        Menghapus data
                     </h3>
                     <div class="mt-2">
                         <p class="text-lg text-gray-500">
-                            Apakah anda setuju untuk mengupdate nilai karyawan, ketika diupdate nilai tidak bisa diubah kembali
+                            Apakah anda setuju untuk menghapus data, ketika dihapus maka data akan dihapus permanen
                         </p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <button id="confirmUpdate" class="focus:outline-none bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 text-white">Setuju, Ubah</button>
-        <button id="cancelUpdate" class="focus:outline-none bg-gray-400 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 text-gray-600">Batalkan</button>
+        <div class="flex justify-end mt-4">
+            <button id="confirmUpdate" class="focus:outline-none bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 text-white">Hapus data</button>
+            <button id="cancelUpdate" class="focus:outline-none bg-gray-400 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 text-gray-600">Batalkan</button>
+        </div>
     </div>
-
-
-
 </div>
 
 <script>
