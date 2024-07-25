@@ -2,7 +2,8 @@
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Http\Request;
+use App\Models\M_nilai;
+use Illuminate\Http\Request;
     use App\Models\M_periode;
 
     class PeriodeController extends Controller
@@ -67,6 +68,7 @@
 
         public function destroy($id)
         {
+            M_nilai::where('id_periode', $id)->update(['id_periode' => null]);
             $periode = M_periode::findOrFail($id);
             $periode->delete();
 

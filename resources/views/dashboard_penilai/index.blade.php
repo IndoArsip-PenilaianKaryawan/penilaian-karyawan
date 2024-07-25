@@ -100,6 +100,7 @@
 
             <!-- jika jabatan adalah kepala bagian -->
             @if ($dataLogin->id_jabatan == 4)
+            @if ($rataNilaiBidang != null)
             <div class="w-full max-w-xs p-8 bg-[#9F2D2D] border  transition relative duration-300 cursor-pointer hover:translate-y-[3px] border-none outline-none hover:shadow-[0_-8px_0px_0px_rgb(0,0,50)] rounded-2xl shadow  ">
                 <a href="{{route('dashboard_penilai.periksa')}}">
                     <h5 class="mb-2 text-xl font-normal tracking-tight text-white opacity-60">Rata-rata Bagian {{$rataNilaiBidang->nama_bidang}}</h5>
@@ -119,10 +120,12 @@
                 </div>
 
             </div>
+            @endif
 
 
             <!-- jika jabatan adalah manager -->
             @elseif($dataLogin->id_jabatan == 3)
+            @if ($rataDapartemen != null)
             <div class="w-full max-w-sm p-8 bg-[#9F2D2D] border transition relative duration-300 cursor-pointer hover:translate-y-[3px] border-none outline-none hover:shadow-[0_-8px_0px_0px_rgb(0,0,50)] rounded-2xl shadow ">
                 <a href="{{route('dashboard_penilai.periksa')}}">
                     <h5 class="mb-2 text-xl font-normal tracking-tight text-white opacity-60">Rata-rata Dapartement {{$rataDapartemen->nama_departement}}</h5>
@@ -141,6 +144,7 @@
                 </div>
 
             </div>
+            @endif
             @endif
         </div>
 

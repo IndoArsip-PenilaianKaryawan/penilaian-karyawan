@@ -47,18 +47,27 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="p-3 bg-[#E5E5E5]  rounded-2xl  text-sm w-full outline-0">
+                            <select id="pagination" name="pagination" required class="bg-transparent w-full outline-0">
+                                <option value=10 {{ $perPage == 10 ? 'selected' : '' }}>10</option>
+                                <option value=20 {{ $perPage == 20 ? 'selected' : '' }}>20</option>
+                                <option value=50 {{$perPage == 50 ? 'selected' : ''}}>50</option>
+                                <option value=100 {{$perPage == 100 ? 'selected' : ''}}>100</option>
+                                <option value=200 value=200 {{$perPage == 200 ? 'selected' : ''}}>200</option>
+                            </select>
+                        </div>
                         <!-- <button type="submit" class="ml-2 px-4 py-2 text-black">Pilih</button> -->
                         <button type="submit" class="focus:outline-none bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 text-white">Sortir</button>
                     </div>
 
                     <div class="flex justify-between items-center">
-                        <div  class="my-4 flex md:flex-row flex-col  w-full gap-2">
+                        <div class="my-4 flex md:flex-row flex-col  w-full gap-2">
                             <div class=" flex justify-start md:w-1/3 ">
                                 <div class=" p-2 md:p-4 bg-[#E5E5E5] rounded-l-2xl flex items-center text-xs md:text-sm w-full">
                                     <i class="fas fa-search text-[#34364A]  pr-2"></i>
-                                    <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text" placeholder="Cari Karyawan..." name="search" value="{{ request('search') }}" >
+                                    <input id="searchInput" class="bg-transparent outline-0 w-10/12" type="text" placeholder="Cari Karyawan..." name="search" value="{{ request('search') }}">
                                 </div>
-                                <button type="submit" class="py-2 md:py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl text-xs md:text-sm" >
+                                <button type="submit" class="py-2 md:py-4 px-6 bg-[#9F2D2D] text-white rounded-r-2xl text-xs md:text-sm">
                                     Cari
                                 </button>
                             </div>
@@ -66,7 +75,9 @@
                         </div>
 
                         @if ($averageNilaiApproval2 > 0)
-                        <h1 class="font-semibold text-lg ">Rata-rata nilai {{number_format($averageNilaiApproval2,2)}}</h1>
+                        <div class="p-2 rounded-lg bg-[#9F2D2D] text-white">
+                            <h1 class="font-semibold text-lg ">Rata-rata nilai {{number_format($averageNilaiApproval2,2)}}</h1>
+                        </div>
                         @endif
                     </div>
                 </div>
@@ -143,6 +154,5 @@
             });
         }
     }
-
 </script>
 @endsection

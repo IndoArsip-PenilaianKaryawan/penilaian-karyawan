@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\M_cabang;
+use App\Models\M_karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CabangController extends Controller
 {
@@ -118,7 +120,14 @@ class CabangController extends Controller
      */
     public function destroy($id)
     {
-        M_cabang::deleteCabang($id);
+        // Hapus referensi dari karyawan yang memiliki id_cabang yang akan dihapus
+        M_karyawan::where('id_cabang', $id)->update(['id_cabang' => null]);
+
+        // Hapus baris utama dari tabel m_cabang
+        M_cabang::where('id', $id)->delete();
+
+        DB::commit();
+
         return redirect()->route('cabang.index')->with('success', 'Cabang berhasil dihapus');
     }
 }

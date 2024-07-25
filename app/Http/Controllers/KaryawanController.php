@@ -7,6 +7,7 @@ use App\Models\M_cabang;
 use App\Models\M_departement;
 use App\Models\M_jabatan;
 use App\Models\M_karyawan;
+use App\Models\M_nilai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -147,9 +148,23 @@ class KaryawanController extends Controller
     // Menghapus karyawan
     public function destroy($id)
     {
-        DB::table('m_karyawan')->where('id', $id)->delete();
+        $karyawan = M_karyawan::find($id);
 
+        // Hapus referensi approval1 dan approval2
+        M_karyawan::where('id_approval_1', $id)->update(['id_approval_1' => null]);
+        M_karyawan::where('id_approval_2', $id)->update(['id_approval_2' => null]);
+
+        // Hapus referensi bawahans (karyawan yang memiliki karyawan ini sebagai atasan)
+        M_karyawan::where('id_atasan', $id)->update(['id_atasan' => null]);;
+        M_nilai::where('id_karyawan', $id)->delete();
+
+        // Hapus baris utama
+        $karyawan->delete();
         return redirect()->route('karyawan.index')
-            ->with('success', 'Karyawan berhasil dihapus');
+        ->with('success', 'Karyawan berhasil dihapus');
     }
+
+
+
+
 }

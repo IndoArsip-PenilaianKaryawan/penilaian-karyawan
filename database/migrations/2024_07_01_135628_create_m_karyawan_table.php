@@ -27,6 +27,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_approval_2')->nullable();
             $table->unsignedBigInteger('id_cabang')->nullable();
 
+            $table->timestamps();
+
             //foreign
             $table->foreign('id_bidang')->references('id')->on('m_bidang');
             $table->foreign('id_atasan')->references('id')->on('m_karyawan');

@@ -203,7 +203,7 @@ class DashboardController extends Controller
         $karyawans = $karyawansQuery->get();
 
         //buat pagination
-        $perPage = 10;
+        $perPage = $request->input('pagination') ?? 10;
 
         // Tentukan halaman saat ini
         $currentPage = Paginator::resolveCurrentPage();
@@ -286,10 +286,10 @@ class DashboardController extends Controller
 
         }
 
-        
+
         $averageNilaiApproval2 = $totalEmployees > 0 ? $totalNilaiApproval2 / $totalEmployees : 0;
 
-        return view('dashboard_adm.rekap', compact('karyawansPaginated', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'cabangs', 'bidangs', 'departements', 'id_cabang', 'id_bidang', 'id_departement', 'averageNilaiApproval2'));
+        return view('dashboard_adm.rekap', compact('karyawansPaginated', 'periodes', 'periode_terpilih', 'nilai_karyawan', 'cabangs', 'bidangs', 'departements', 'id_cabang', 'id_bidang', 'id_departement', 'averageNilaiApproval2', 'perPage'));
     }
 
 

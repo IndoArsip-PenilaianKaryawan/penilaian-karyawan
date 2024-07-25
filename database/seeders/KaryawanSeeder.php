@@ -28,6 +28,8 @@ class KaryawanSeeder extends Seeder
                 'id_approval_1' => NULL,
                 'id_approval_2' => NULL,
                 'is_penilai' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'id' => 2,
@@ -41,6 +43,8 @@ class KaryawanSeeder extends Seeder
                 'id_approval_1' => 1,  // Aditya
                 'id_approval_2' => 1,  // Aditya
                 'is_penilai' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'id' => 3,
@@ -54,6 +58,8 @@ class KaryawanSeeder extends Seeder
                 'id_approval_1' => 2,  // Budi
                 'id_approval_2' => 1,  // Aditya
                 'is_penilai' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'id' => 4,
@@ -67,6 +73,8 @@ class KaryawanSeeder extends Seeder
                 'id_approval_1' => 3,  // Citra
                 'id_approval_2' => 2,  // Budi
                 'is_penilai' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'id' => 5,
@@ -80,6 +88,8 @@ class KaryawanSeeder extends Seeder
                 'id_approval_1' => 4,  // Dewi
                 'id_approval_2' => 3,  // Citra
                 'is_penilai' => false,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'id' => 6,
@@ -93,6 +103,8 @@ class KaryawanSeeder extends Seeder
                 'id_approval_1' => 1,  // Aditya
                 'id_approval_2' => 1,  // Aditya
                 'is_penilai' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'id' => 7,
@@ -106,6 +118,8 @@ class KaryawanSeeder extends Seeder
                 'id_approval_1' => 6,  // Fajar
                 'id_approval_2' => 1,  // Aditya
                 'is_penilai' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
         ]);
     }
