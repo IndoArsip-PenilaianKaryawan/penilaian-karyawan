@@ -113,7 +113,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/rekap">
+                    <a href="/rekap/nilai/filter">
                         <button id="rekap-link" class="flex items-center gap-6 w-full p-4 rounded-2xl" type="button">
                             <span class="text-xs">
                                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
@@ -211,7 +211,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/rekap">
+                    <a href="/rekap/nilai/filter">
                         <button id="rekap-link" class="flex items-center gap-6 w-full p-4 rounded-2xl" type="button">
                             <span class="text-xs">
                                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">

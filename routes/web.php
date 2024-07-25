@@ -21,7 +21,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth:admin'])->group(function () {
     // Menampilkan dashboard
     Route::get('admin', [DashboardController::class, 'index'])->name('beranda');
-    Route::get('rekap', [DashboardController::class, 'rekapNilai'])->name('rekap_nilai');
+    Route::get('rekap/nilai/filter', [DashboardController::class, 'rekapNilai'])->name('rekap_nilai');
     Route::post('/rekap/nilai/filter', [DashboardController::class, 'rekapNilai'])->name('rekap_nilai.filter');
     Route::get('/export-rekap', [DashboardController::class, 'exportRekap'])->name('export.rekap');
     Route::post('/export-rekap', [DashboardController::class, 'exportRekap'])->name('export.rekap');
