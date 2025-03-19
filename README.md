@@ -1,7 +1,7 @@
 # Laravel Project
 
 ## 📌 Introduction
-This is a Laravel-based project designed to [describe your project's purpose]. It includes features such as [list main features].
+This is a Laravel-based project designed to project show case internship. It includes features such as employe asesment and management employment.
 
 ## 🛠 Requirements
 Ensure your system meets the following requirements:
@@ -15,8 +15,8 @@ Follow these steps to set up the project locally:
 
 1. **Clone the repository**
    ```sh
-   git clone https://github.com/your-username/your-repo.git
-   cd your-repo
+   git clone https://github.com/IndoArsip-PenilaianKaryawan/penilaian-karyawan
+   cd penilaian-karyawan
    ```
 
 2. **Install dependencies**
@@ -45,6 +45,7 @@ Follow these steps to set up the project locally:
 ## 🛠 Development & Usage
 ### Running the project
 - To start the local server: `php artisan serve`
+- 
 ## 📜 License
 This project is licensed under the [MIT License](LICENSE).
 
